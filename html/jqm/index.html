@@ -1,122 +1,120 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<title>Page Title</title>
-		<!--
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a3/jquery.mobile-1.0a3.min.css" />
-		<link rel="stylesheet" href="http://jquerymobile.com/demos/1.0a3/docs/_assets/css/jqm-docs.css" />
+    <head>
+        <title>Mix and Match mit jQuery Mobile</title>
 
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.3.min.js"></script>
-		<script type="text/javascript" src="http://code.jquery.com/mobile/1.0a3/jquery.mobile-1.0a3.min.js"></script>
-		-->
-		<link rel="stylesheet" href="../../css/jquery.mobile-1.0a3.min.css" />
-		<link rel="stylesheet" href="../../css/jqm-docs.css" />
+        <link rel="stylesheet" href="../../css/jqm/jquery.mobile-1.0a3.min.css" />
+        <link rel="stylesheet" href="../../css/jqm/jqm-docs.css" />
 
-		<script type="text/javascript" src="../../js/lib/jquery-1.4.3.min.js"></script>
-		<script type="text/javascript" src="../../js/lib/jquery.mobile-1.0a3.min.js"></script>
+        <script type="text/javascript" src="../../js/lib/jquery-1.4.3.min.js"></script>
+        <script type="text/javascript" src="../../js/lib/jquery.mobile-1.0a3.min.js"></script>
 
-		<script type="text/javascript" src="../../js/lib/jquery.cookie.js"></script>
-		<script type="text/javascript" src="../../js/lib/log4javascript.js"></script>
-		<script type="text/javascript" src="../../js/lib/json2.js"></script>
+        <script type="text/javascript" src="../../js/lib/jquery.cookie.js"></script>
+        <script type="text/javascript" src="../../js/lib/log4javascript.js"></script>
+        <script type="text/javascript" src="../../js/lib/json2.js"></script>
 
-		<script type="text/javascript" src="../../js/init.js"></script>
-		<script type="text/javascript" src="../../js/MixAndMatch.js"></script>
-
-		<script type="text/javascript">
-			$(document).ready(function(){
-				initMixAndMatch();
-
-				$('#select-choice-1').change(function(object) {
-					log.info("selected");
-					log.info("Objekt:", $(this).val());
-					localStorage["defaultLocation"] = $(this).val();
-				});
-
-				$('#checkinButton').click(
-                                mixAndMatch.checkin
-/*
-    function() {
-					log.debug("Checkin button clicked");
-					$.getJSON('http://mixmatch-t.elasticbeanstalk.com/locations?callback=?', function(data) {
-						log.info("Data:", JSON.stringify(data));
-						$('#checkinResponse').text(JSON.stringify(data));
-					});
-				}
-                                        */
-                                );
-
-			});
+        <script type="text/javascript" src="../../js/init.js"></script>
+        <script type="text/javascript" src="../../js/MixAndMatch.js"></script>
+        <script type="text/javascript" src="../../js/RemoteService.js"></script>
 
 
-		</script>
+        <script type="text/javascript">
+            var mixAndMatch;
+            
+            $(document).ready(function(){
+                configureLogging();
+                
+                // create the remote service object which should be used in MixAndMatch
+                var remoteService = new RemoteService();
+                
+                // create the MixAndMatch instance
+                mixAndMatch = new MixAndMatch(remoteService);
 
-	</head>
-	<body>
+                // bind an event handler to the drop-down to save the selected value
+                $('#select-choice-1').change(function(object) {
+                    log.info("selected");
+                    log.info("Objekt:", $(this).val());
+                    // html5 feature to persitent values
+                    localStorage["defaultLocation"] = $(this).val();
+                });
 
-		<div data-role="page" id="index">
-			<div data-role="header" data-theme="b">
-				<h1>Mix and Match</h1>
-			</div>
+                // bind "checkin()" method of MixAndMatch to the click event of the button
+                $('#checkinButton').click(
+                    mixAndMatch.getLocations
+                );
 
-			<div data-role="content">
-				<p>Startseite</p>
-
-				<ul data-role="listview" data-inset="true">
-					<li><a href="#checkIn">Check in</a></li>
-					<li><a href="#settings">Einstellungen</a></li>
-				</ul>
-			</div>
-
-			<div data-role="footer">
-				<h4>Page Footer</h4>
-			</div>
-		</div>
+            });
 
 
-		<div data-role="page" id="checkIn">
-			<div data-role="header" data-theme="b">
-				<h1>Check in</h1>
-				<a href="#index" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
-			</div>
+        </script>
 
-			<div data-role="content">
-				<p>Text</p>
-				<button id="checkinButton">Checkin</button>
-				<p id="checkinResponse">Result:</p>
-			</div>
+    </head>
+    <body>
 
-			<div data-role="footer">
-				<h4>Page Footer</h4>
-			</div>
-		</div>
+        <div data-role="page" id="index">
+            <div data-role="header" data-theme="b">
+                <h1>Mix and Match</h1>
+            </div>
 
-		<div data-role="page" id="settings">
-			<div data-role="header" data-theme="b">
-				<h1>Einstellungen</h1>
-				<a href="#index" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
-			</div>
+            <div data-role="content">
+                <p>Startseite</p>
 
-			<div data-role="content">
-				<p>Bitte Einstellungen vornehmen</p>
-				<div data-role="fieldcontain">
-					<label for="name">Name:</label>
-					<input type="text" name="name" id="name" value=""  />
-				</div>
+                <ul data-role="listview" data-inset="true">
+                    <li><a href="#checkIn">Check in</a></li>
+                    <li><a href="#settings">Einstellungen</a></li>
+                </ul>
+            </div>
 
-				<div data-role="fieldcontain">
-					<label for="select-choice-1" class="select">Default Ort:</label>
-					<select name="select-choice-1" id="select-choice-1">
-						<option value="metafinanz">MetaFinanz</option>
-						<option value="unterfoehring">Unterföhring</option>
-						<option value="xy">XY</option>
-					</select>
-				</div>
-			</div>
+            <div data-role="footer">
+                <h4>Page Footer</h4>
+            </div>
+        </div>
 
-			<div data-role="footer">
-				<h4>Page Footer</h4>
-			</div>
-		</div>
 
-	</body>
+        <div data-role="page" id="checkIn">
+            <div data-role="header" data-theme="b">
+                <h1>Check in</h1>
+                <a href="#index" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+            </div>
+
+            <div data-role="content">
+                <p>Text</p>
+                <button id="checkinButton">Checkin</button>
+                <p id="checkinResponse">Result:</p>
+            </div>
+
+            <div data-role="footer">
+                <h4>Page Footer</h4>
+            </div>
+        </div>
+
+        <div data-role="page" id="settings">
+            <div data-role="header" data-theme="b">
+                <h1>Einstellungen</h1>
+                <a href="#index" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+            </div>
+
+            <div data-role="content">
+                <p>Bitte Einstellungen vornehmen</p>
+                <div data-role="fieldcontain">
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" id="name" value=""  />
+                </div>
+
+                <div data-role="fieldcontain">
+                    <label for="select-choice-1" class="select">Default Ort:</label>
+                    <select name="select-choice-1" id="select-choice-1">
+                        <option value="metafinanz">MetaFinanz</option>
+                        <option value="unterfoehring">Unterföhring</option>
+                        <option value="xy">XY</option>
+                    </select>
+                </div>
+            </div>
+
+            <div data-role="footer">
+                <h4>Page Footer</h4>
+            </div>
+        </div>
+
+    </body>
 </html>

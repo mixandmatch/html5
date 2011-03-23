@@ -1,21 +1,30 @@
 /**
- * @class
  * This is the main MixAndMatch class.
- *
- * @constructor
  */
-function MixAndMatch() {
-   // this.log = log4javascript.getLogger("de.demo.MixAndMatch");
+function MixAndMatch(pRemoteService) {
+    
+    /** private property for logging */
+    var log = log4javascript.getLogger("de.html5.MixAndMatch");
+    
+    /** the remote service for ajax calls */
+    var remoteService = pRemoteService;
+    
+    /**
+     * public checkin function
+     */
+    this.getLocations = function() {
+        log.debug('checkin()');
+        remoteService.getLocations(getLocationsCallback);
+    }
+    
+    /**
+     * callback function for the getLocations method
+     */
+    function getLocationsCallback(data) {
+        log.debug('getLocationsCallback');
+        log.debug('list object:', JSON.stringify(data));
+    }
+    
+    /** use the private log object */
+    log.debug('MixAndMatch created');
 }
-
-/**
- * Checkin to mix and match.
- *
- */
-MixAndMatch.prototype.checkin = function() {
-    log.debug("checkin()");
-    $.getJSON('http://mixmatch-t.elasticbeanstalk.com/locations?callback=?', function(data) {
-        log.info("Data:", JSON.stringify(data));
-        $('#checkinResponse').text(JSON.stringify(data));
-    });
-};

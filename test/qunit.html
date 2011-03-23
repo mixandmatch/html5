@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>qunit Testpage</title>
+
+        <link rel="stylesheet" href="../css/qunit.css" type="text/css" media="screen" />
+
+        <script src="../js/lib/jquery-1.5.1.min.js"></script>
+        <script src="../js/lib/qunit.js"></script>
+        <script src="../js/lib/log4javascript.js"></script>
+
+        <script src="../js/init.js"></script>
+        <script src="../js/Test1.js"></script>
+        <script src="../js/Test2.js"></script>
+        <script src="../js/Test3.js"></script>
+
+        <script>
+            $(document).ready(function(){
+    
+                mamConfigureLogging();
+                
+                test("a basic test example", function() {
+                    ok( true, "this test is fine" );
+                    var value = "hello";
+                    equals( "hello", value, "We expect value to be hello" );
+                });
+
+                module("Module A");
+
+                test("first test within module", function() {
+                    var test3 = new Test3("juhu");
+                    test3.service();
+                    ok( true, "this test is fine" );
+                });
+                
+            });
+        </script>
+
+    </head>
+    <body>
+        <h1 id="qunit-header">QUnit example</h1>
+        <h2 id="qunit-banner"></h2>
+        <div id="qunit-testrunner-toolbar"></div>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+        <div id="qunit-fixture">test markup, will be hidden</div>
+    </body>
+</html>
