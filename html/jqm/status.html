@@ -12,7 +12,20 @@
         <script type="text/javascript" src="../../js/lib/jquery.cookie.js"></script>
         <script type="text/javascript" src="../../js/lib/log4javascript.js"></script>
         <script type="text/javascript" src="../../js/lib/json2.js"></script>
+ 		<script type="text/javascript" src="../../js/StorageService.js"></script>
 
+ 		<script type="text/javascript">
+        $(document).ready(function(){
+                var storageService = new StorageService();
+                var userRequestData = storageService.getSavedUserRequestObject();
+
+                $('#requestData').html(
+                		userRequestData.name + ", " +
+                		userRequestData.email + ", "+
+                		userRequestData.date + ", " +
+                		userRequestData.place);
+        });
+        </script>
     </head>
     <body>
 
@@ -23,7 +36,12 @@
             </div>
 
             <div data-role="content">
-				Todo
+				<div>
+					Try to find match for:
+				</div>
+				<div id="requestData">
+					<!-- will be filled by javascript -->
+				</div>
 			</div>
 
             <div data-role="footer">

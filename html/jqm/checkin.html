@@ -26,12 +26,22 @@
         <script type="text/javascript" src="../../js/init.js"></script>
         <script type="text/javascript" src="../../js/MixAndMatch.js"></script>
         <script type="text/javascript" src="../../js/RemoteService.js"></script>
-        
+        <script type="text/javascript" src="../../js/StorageService.js"></script>
         
         <script type="text/javascript">
         
-        
         $(document).ready(function(){
+        	var storageService = new StorageService();
+        	
+        	// try to load the old values
+        	var userRequestObject = storageService.getSavedUserRequestObject();
+        	$('#name').val(userRequestObject.name);
+            $('#email').val(userRequestObject.email);
+            $('#date').val(userRequestObject.date);
+            $('#select-choice-1').val(userRequestObject.place);
+        	
+        	//-------------------------------------------------------------------------
+	        // DatePicker functionality
         	// http://pinoytech.org/question/4886672/jquery-mobile-override-jquery-ui-datepicker-layout-broken
         	$( '#date' ).next().hide('fast');
 
@@ -43,6 +53,24 @@
 	        $( '.ui-body-c a' ).live('click', function() { 
 	            $( '#date' ).next().hide('slow');
 	        });
+	        
+	        //-------------------------------------------------------------------------
+	        
+            // bind "checkin()" method of MixAndMatch to the click event of the button
+            $('#checkinButton').click(function(){
+                // save the attributes in the local storage
+                var userRequestObject = new UserRequestObject();
+                
+                userRequestObject.name = $('#name').val();
+                userRequestObject.email = $('#email').val();
+                userRequestObject.date = $('#date').val();
+                userRequestObject.place = $('#select-choice-1').val();
+                
+                // save the object in the local storage
+                storageService.saveUserRequestObject(userRequestObject);
+                
+                alert('Check in successful!');
+            });
         });
 
         </script>
@@ -62,7 +90,7 @@
                     <input type="text" name="name" id="name" value=""  />
 				</div>
 				<div data-role="fieldcontain">
-					<label for="name">Email:</label>
+					<label for="email">Email:</label>
                     <input type="email" name="email" id="email" value=""  />
 				</div>
 				<div data-role="fieldcontain">
@@ -77,6 +105,7 @@
                         <option value="xy">XY</option>
                     </select>
                 </div>
+                <button id="checkinButton">Check in</button>
             </div>
 
             <div data-role="footer">
