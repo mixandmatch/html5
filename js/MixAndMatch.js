@@ -25,6 +25,14 @@ function MixAndMatch(pRemoteService) {
         log.debug('list object:', JSON.stringify(data));
     }
     
+    /**
+     * public lunch response function
+     */
+    this.getLunchResponse = function(callback, userDataObject) {
+    	log.debug('lunch response');
+    	remoteService.getLunchResponse(callback, userDataObject);
+    }
+    
     /** use the private log object */
     log.debug('MixAndMatch created');
 }

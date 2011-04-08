@@ -15,10 +15,21 @@ function RemoteService() {
         // jQuery Ajax call with an anonymous callback function
         $.getJSON('http://mixmatch-t.elasticbeanstalk.com/locations?callback=?', function(data) {
             log.debug("Location data:", JSON.stringify(data));
-            // write the data as string to the view
-            $('#checkinResponse').text(JSON.stringify(data));
             // execute the callback parameter to get back to the MixAndMatch object
             pCallback(data);
+        });
+    }
+    
+    /**
+     * call the backend to get a list of all lunch responses
+     */
+    this.getLunchResponse = function(pCallback, userRequestObject) {
+    	var url = 'http://mixmatch-t.elasticbeanstalk.com/requests?callback=?'
+    	
+    	$.getJSON(url, function(data) {
+             log.debug("Response data:", JSON.stringify(data));
+             // execute the callback parameter to get back to the Response object
+             pCallback(data);
         });
     }
     

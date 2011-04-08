@@ -12,19 +12,52 @@
         <script type="text/javascript" src="../../js/lib/jquery.cookie.js"></script>
         <script type="text/javascript" src="../../js/lib/log4javascript.js"></script>
         <script type="text/javascript" src="../../js/lib/json2.js"></script>
+        
+        <script type="text/javascript" src="../../js/init.js"></script>
+        <script type="text/javascript" src="../../js/MixAndMatch.js"></script>
+        <script type="text/javascript" src="../../js/RemoteService.js"></script>
  		<script type="text/javascript" src="../../js/StorageService.js"></script>
 
  		<script type="text/javascript">
-        $(document).ready(function(){
-                var storageService = new StorageService();
+ 		var mixAndMatch;
+ 		
+ 		$(document).ready(function(){
+        		
+        	    var storageService = new StorageService();
                 var userRequestData = storageService.getSavedUserRequestObject();
-
-                $('#requestData').html(
-                		userRequestData.name + ", " +
-                		userRequestData.email + ", "+
-                		userRequestData.date + ", " +
-                		userRequestData.place);
+                showUserRequestObject(userRequestData);
+                
+                // create the remote service object which should be used in MixAndMatch
+                var remoteService = new RemoteService();
+                
+                // create the MixAndMatch instance
+                mixAndMatch = new MixAndMatch(remoteService);
+                
+                // get the lunch response 
+                mixAndMatch.getLunchResponse(showResponse, userRequestData);
         });
+ 		
+ 		function showUserRequestObject(userRequestData){
+ 			 $('#requestData').html(
+             		userRequestData.name + ", " +
+             		userRequestData.email + ", "+
+             		userRequestData.date + ", " +
+             		userRequestData.place);
+ 		}
+        
+        function showResponse(responseDataArray) {
+        	
+        	var dynamicHtml= '<ul>'
+         	for(var i=0;i<responseDataArray.length;i++){
+         		dynamicHtml += '<li>'
+         		var responseData = responseDataArray[i];
+        	    dynamicHtml += responseData.locationKey + ", " + responseData.date + ", " + responseData.userid;
+        	    dynamicHtml += '</li>'
+         	}
+        	dynamicHtml += '</ul>'
+        	
+        	$('#responseData').html(dynamicHtml);
+        }
         </script>
     </head>
     <body>
@@ -37,9 +70,16 @@
 
             <div data-role="content">
 				<div>
-					Try to find match for:
+					Your last request:
 				</div>
 				<div id="requestData">
+					<!-- will be filled by javascript -->
+				</div>
+				<br/>
+				<div>
+					The next events:
+				</div>
+				<div id="responseData">
 					<!-- will be filled by javascript -->
 				</div>
 			</div>
