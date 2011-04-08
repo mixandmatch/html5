@@ -15,6 +15,8 @@ function RemoteService() {
         // jQuery Ajax call with an anonymous callback function
         $.getJSON('http://mixmatch-t.elasticbeanstalk.com/locations?callback=?', function(data) {
             log.debug("Location data:", JSON.stringify(data));
+            // write the data as string to the view
+            $('#checkinResponse').text(JSON.stringify(data));
             // execute the callback parameter to get back to the MixAndMatch object
             pCallback(data);
         });
