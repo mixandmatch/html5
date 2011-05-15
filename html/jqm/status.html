@@ -8,22 +8,22 @@
 
         <script type="text/javascript" src="../../js/lib/jquery-1.4.3.min.js"></script>
         <script type="text/javascript" src="../../js/lib/jquery.mobile-1.0a3.min.js"></script>
-        
+
         <script type="text/javascript" src="../../js/lib/jquery.cookie.js"></script>
         <script type="text/javascript" src="../../js/lib/log4javascript.js"></script>
         <script type="text/javascript" src="../../js/lib/json2.js"></script>
-        
+
         <script type="text/javascript" src="../../js/init.js"></script>
         <script type="text/javascript" src="../../js/MixAndMatch.js"></script>
         <script type="text/javascript" src="../../js/RemoteService.js"></script>
- 		<script type="text/javascript" src="../../js/StorageService.js"></script>
+        <script type="text/javascript" src="../../js/StorageService.js"></script>
 
- 		<script type="text/javascript">
- 		var mixAndMatch;
+        <script type="text/javascript">
+            var mixAndMatch;
  		
- 		$(document).ready(function(){
+            $(document).ready(function(){
         		
-        	    var storageService = new StorageService();
+                var storageService = new StorageService();
                 var userRequestData = storageService.getSavedUserRequestObject();
                 showUserRequestObject(userRequestData);
                 
@@ -33,56 +33,56 @@
                 // create the MixAndMatch instance
                 mixAndMatch = new MixAndMatch(remoteService);
                 
-                // get the lunch response 
+                // get the lunch response
                 mixAndMatch.getLunchResponse(showResponse, userRequestData);
-        });
+            });
  		
- 		function showUserRequestObject(userRequestData){
- 			 $('#requestData').html(
-             		userRequestData.name + ", " +
-             		userRequestData.email + ", "+
-             		userRequestData.date + ", " +
-             		userRequestData.place);
- 		}
+            function showUserRequestObject(userRequestData){
+                $('#requestData').html(
+                userRequestData.name + ", " +
+                    userRequestData.email + ", "+
+                    userRequestData.date + ", " +
+                    userRequestData.place);
+            }
         
-        function showResponse(responseDataArray) {
+            function showResponse(responseDataArray) {
         	
-        	var dynamicHtml= '<ul>'
-         	for(var i=0;i<responseDataArray.length;i++){
-         		dynamicHtml += '<li>'
-         		var responseData = responseDataArray[i];
-        	    dynamicHtml += responseData.locationKey + ", " + responseData.date + ", " + responseData.userid;
-        	    dynamicHtml += '</li>'
-         	}
-        	dynamicHtml += '</ul>'
+                var dynamicHtml= '<ul>'
+                for(var i=0;i<responseDataArray.length;i++){
+                    dynamicHtml += '<li>'
+                    var responseData = responseDataArray[i];
+                    dynamicHtml += responseData.locationKey + ", " + responseData.date + ", " + responseData.userid;
+                    dynamicHtml += '</li>'
+                }
+                dynamicHtml += '</ul>'
         	
-        	$('#responseData').html(dynamicHtml);
-        }
+                $('#responseData').html(dynamicHtml);
+            }
         </script>
     </head>
     <body>
 
         <div data-role="page">
             <div data-role="header" data-theme="b">
-            	<a href="index.html" rel="external" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left">Back</a>
+                <a href="index.html" rel="external" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left">Back</a>
                 <h1>Request Status</h1>
             </div>
 
             <div data-role="content">
-				<div>
+                <div>
 					Your last request:
-				</div>
-				<div id="requestData">
-					<!-- will be filled by javascript -->
-				</div>
-				<br/>
-				<div>
+                </div>
+                <div id="requestData">
+                    <!-- will be filled by javascript -->
+                </div>
+                <br/>
+                <div>
 					The next events:
-				</div>
-				<div id="responseData">
-					<!-- will be filled by javascript -->
-				</div>
-			</div>
+                </div>
+                <div id="responseData">
+                    <!-- will be filled by javascript -->
+                </div>
+            </div>
 
             <div data-role="footer">
                 <h4>HTML5-Team</h4>

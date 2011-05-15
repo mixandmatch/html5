@@ -3,19 +3,19 @@
     <head>
         <title>Mix and Match mit jQuery Mobile</title>
 
- 		<link rel="stylesheet" href="../../css/jqm/jquery.ui.datepicker.mobile.css" />
+        <link rel="stylesheet" href="../../css/jqm/jquery.ui.datepicker.mobile.css" />
         <link rel="stylesheet" href="../../css/jqm/jquery.mobile-1.0a3.min.css" />
         <link rel="stylesheet" href="../../css/jqm/jqm-docs.css" />
 
         <script type="text/javascript" src="../../js/lib/jquery-1.4.3.min.js"></script>
         <script type="text/javascript" src="../../js/lib/jquery.mobile-1.0a3.min.js"></script>
-        
-        <script> 
-			//reset type=date inputs to text
-			$( document ).bind( "mobileinit", function(){
-				$.mobile.page.prototype.options.degradeInputs.date = true;
-			});	
-		</script> 
+
+        <script>
+            //reset type=date inputs to text
+            $( document ).bind( "mobileinit", function(){
+                $.mobile.page.prototype.options.degradeInputs.date = true;
+            });
+        </script>
         <script type="text/javascript" src="../../js/lib/jQuery.ui.datepicker.js"></script>
         <script type="text/javascript" src="../../js/lib/jquery.ui.datepicker.mobile.js"></script>
 
@@ -27,51 +27,66 @@
         <script type="text/javascript" src="../../js/MixAndMatch.js"></script>
         <script type="text/javascript" src="../../js/RemoteService.js"></script>
         <script type="text/javascript" src="../../js/StorageService.js"></script>
-        
-        <script type="text/javascript">
-        
-        $(document).ready(function(){
-        	var storageService = new StorageService();
-        	
-        	// try to load the old values
-        	var userRequestObject = storageService.getSavedUserRequestObject();
-        	$('#name').val(userRequestObject.name);
-            $('#email').val(userRequestObject.email);
-            $('#date').val(userRequestObject.date);
-            $('#select-choice-1').val(userRequestObject.place);
-        	
-        	//-------------------------------------------------------------------------
-	        // DatePicker functionality
-        	// http://pinoytech.org/question/4886672/jquery-mobile-override-jquery-ui-datepicker-layout-broken
-        	$( '#date' ).next().hide('fast');
 
-	        $( '#date').focus(function() {
-	            $( '#date' ).next().show('slow');
-	        });
-	
-	        // .live() event importantor else clicks stop functioning
-	        $( '.ui-body-c a' ).live('click', function() { 
-	            $( '#date' ).next().hide('slow');
-	        });
-	        
-	        //-------------------------------------------------------------------------
-	        
-            // bind "checkin()" method of MixAndMatch to the click event of the button
-            $('#checkinButton').click(function(){
-                // save the attributes in the local storage
-                var userRequestObject = new UserRequestObject();
-                
-                userRequestObject.name = $('#name').val();
-                userRequestObject.email = $('#email').val();
-                userRequestObject.date = $('#date').val();
-                userRequestObject.place = $('#select-choice-1').val();
-                
-                // save the object in the local storage
-                storageService.saveUserRequestObject(userRequestObject);
-                
-                alert('Check in successful!');
+        <script type="text/javascript">
+
+            $(document).ready(function(){
+                var storageService = new StorageService();
+
+                // try to load the old values
+                var userRequestObject = storageService.getSavedUserRequestObject();
+                $('#name').val(userRequestObject.name);
+                $('#email').val(userRequestObject.email);
+                $('#date').val(userRequestObject.date);
+                $('#select-choice-1').val(userRequestObject.place);
+
+                //-------------------------------------------------------------------------
+                // DatePicker functionality
+                // http://pinoytech.org/question/4886672/jquery-mobile-override-jquery-ui-datepicker-layout-broken
+                $( '#date' ).next().hide('fast');
+
+                $( '#date').focus(function() {
+                    $( '#date' ).next().show('slow');
+                });
+
+                // .live() event importantor else clicks stop functioning
+                $( '.ui-body-c a' ).live('click', function() {
+                    $( '#date' ).next().hide('slow');
+                });
+
+                //-------------------------------------------------------------------------
+
+                // bind "checkin()" method of MixAndMatch to the click event of the button
+                $('#checkinButton').click(function(){
+                    // save the attributes in the local storage
+                    var userRequestObject = new UserRequestObject();
+
+                    userRequestObject.name = $('#name').val();
+                    userRequestObject.email = $('#email').val();
+                    userRequestObject.date = $('#date').val();
+                    userRequestObject.place = $('#location-choice').val();
+
+                    // save the object in the local storage
+                    storageService.saveUserRequestObject(userRequestObject);
+
+                    alert('Check in successful!');
+                });
+
+                var remoteService = new RemoteService();
+                var mixAndMatch = new MixAndMatch(remoteService);
+                mixAndMatch.getLocations(showLocations);
+
             });
-        });
+
+            function showLocations(responseDataArray) {
+
+                $.each(responseDataArray, function(i, j){
+                    var row = "<option value=\"" + j.key + "\">" + j.label + "</option>";
+                    $(row).appendTo("select#location-choice");
+                });
+
+                $("#location-choice").selectmenu('refresh', true);
+            }
 
         </script>
 
@@ -80,30 +95,26 @@
 
         <div data-role="page">
             <div data-role="header" data-theme="b">
-            	<a href="index.html" rel="external" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left">Back</a>
+                <a href="index.html" rel="external" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left">Back</a>
                 <h1>Check in</h1>
             </div>
 
             <div data-role="content">
-				<div data-role="fieldcontain">
-					<label for="name">Name:</label>
+                <div data-role="fieldcontain">
+                    <label for="name">Name:</label>
                     <input type="text" name="name" id="name" value=""  />
-				</div>
-				<div data-role="fieldcontain">
-					<label for="email">Email:</label>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="email">Email:</label>
                     <input type="email" name="email" id="email" value=""  />
-				</div>
-				<div data-role="fieldcontain">
-                	<label for="date">Date Input:</label>
-					<input type="date" name="date" id="date" value=""  />	
-                </div> 
-				<div data-role="fieldcontain">
-                    <label for="select-choice-1" class="select">Default Ort:</label>
-                    <select name="select-choice-1" id="select-choice-1">
-                        <option value="metafinanz">MetaFinanz</option>
-                        <option value="unterfoehring">Unterföhring</option>
-                        <option value="xy">XY</option>
-                    </select>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="date">Date Input:</label>
+                    <input type="date" name="date" id="date" value=""  />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="location-choice" class="select">Default Ort:</label>
+                    <select name="location-choice" id="location-choice"></select>
                 </div>
                 <button id="checkinButton">Check in</button>
             </div>
