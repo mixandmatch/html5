@@ -3,30 +3,9 @@
     <head>
         <title>Mix and Match mit jQuery Mobile</title>
 
-        <link rel="stylesheet" href="../../css/jqm/jquery.ui.datepicker.mobile.css" />
-        <link rel="stylesheet" href="../../css/jqm/jquery.mobile-1.0a3.min.css" />
-        <link rel="stylesheet" href="../../css/jqm/jqm-docs.css" />
-
-        <script type="text/javascript" src="../../js/lib/jquery-1.4.3.min.js"></script>
-        <script type="text/javascript" src="../../js/lib/jquery.mobile-1.0a3.min.js"></script>
-
-        <script>
-            //reset type=date inputs to text
-            $( document ).bind( "mobileinit", function(){
-                $.mobile.page.prototype.options.degradeInputs.date = true;
-            });
-        </script>
-        <script type="text/javascript" src="../../js/lib/jQuery.ui.datepicker.js"></script>
-        <script type="text/javascript" src="../../js/lib/jquery.ui.datepicker.mobile.js"></script>
-
-        <script type="text/javascript" src="../../js/lib/jquery.cookie.js"></script>
-        <script type="text/javascript" src="../../js/lib/log4javascript.js"></script>
-        <script type="text/javascript" src="../../js/lib/json2.js"></script>
-
-        <script type="text/javascript" src="../../js/init.js"></script>
-        <script type="text/javascript" src="../../js/MixAndMatch.js"></script>
-        <script type="text/javascript" src="../../js/RemoteService.js"></script>
-        <script type="text/javascript" src="../../js/StorageService.js"></script>
+		<script type="text/javascript" src="../../js/LibService.js"></script>
+        <script type="text/javascript" src="../../js/CommonHeaderLibs.js"></script>
+		<script type="text/javascript" src="../../js/DatePickerLibs.js"></script>
 
         <script type="text/javascript">
 
