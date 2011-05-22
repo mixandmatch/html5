@@ -3,21 +3,22 @@
     <head>
         <title>qunit Testpage</title>
 
-        <link rel="stylesheet" href="../css/qunit.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="../css/jqm/qunit.css" type="text/css" media="screen" />
 
         <script src="../js/lib/jquery-1.5.1.min.js"></script>
         <script src="../js/lib/qunit.js"></script>
         <script src="../js/lib/log4javascript.js"></script>
 
-        <script src="../js/init.js"></script>
-        <script src="../js/Test1.js"></script>
-        <script src="../js/Test2.js"></script>
-        <script src="../js/Test3.js"></script>
+        <script src="../js/final/init.js"></script>
+        <script src="../js/work/Test1.js"></script>
+        <script src="../js/work/Test2.js"></script>
+        <script src="../js/work/Test3.js"></script>
+        <script src="../js/final/RemoteServiceValidator.js"></script>
 
         <script>
             $(document).ready(function(){
     
-                mamConfigureLogging();
+                configureLogging();
                 
                 test("a basic test example", function() {
                     ok( true, "this test is fine" );
@@ -32,7 +33,17 @@
                     test3.service();
                     ok( true, "this test is fine" );
                 });
-                
+
+                module("Module RemoteServiceValidator");
+       
+                var remote = new RemoteServiceValidator();
+                remote.addUrl('http://saskldoskjsaicjpoasdaslk.com');
+                remote.addUrl('http://www.cybersmog.de');
+                remote.addUrl('http://mixmatch-t.elasticbeanstalk.com/locations?callback=?');
+                remote.addUrl('http://twitter.com/statuses/friends/wadenkrampf.json?callback=?');
+                remote.validate(function(data) {
+                    log.info("Data:", JSON.stringify(data));
+                });
             });
         </script>
 
