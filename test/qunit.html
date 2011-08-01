@@ -16,16 +16,44 @@
         <script src="../js/final/RemoteServiceValidator.js"></script>
 
         <script>
+			
+			function UserRequestObject() {
+				var name;
+				var email = 'mail';
+				var date;
+				var place;
+				this.getName = function() {
+					return name;
+				}
+				this.setName = function(pName) {
+					name = pName;
+				}
+				this.setDate = function(pDate) {
+					date = pDate;
+				}
+			}
             $(document).ready(function(){
     
                 configureLogging();
                 
                 test("a basic test example", function() {
+					
+					var tmp = new UserRequestObject();
+					tmp.setName('per setter');
+					tmp.name = 'per property';
+					tmp.setDate('juhu');
+		
+					
+					equals( tmp.getName(), "per setter" );
+					equals( tmp.name, "per property", "meine Meldung" );
+					
                     ok( true, "this test is fine" );
+					/*
                     var value = "hello";
                     equals( "hello", value, "We expect value to be hello" );
+					 */
                 });
-
+				/*
                 module("Module A");
 
                 test("first test within module", function() {
@@ -44,7 +72,8 @@
                 remote.validate(function(data) {
                     log.info("Data:", JSON.stringify(data));
                 });
-            });
+				 */
+			});
         </script>
 
     </head>
