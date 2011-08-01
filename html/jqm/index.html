@@ -3,36 +3,14 @@
     <head>
         <title>Mix and Match mit jQuery Mobile</title>
 
-        <script type="text/javascript" src="../../js/LibService.js"></script>
         <script type="text/javascript" src="../../js/CommonHeaderLibs.js"></script>
+        <script type="text/javascript" src="../../js/CommonHeaderInit.js"></script>
 
         <script type="text/javascript">
-            var mixAndMatch;
             
             $(document).ready(function(){
-                configureLogging();
-                
-                // create the remote service object which should be used in MixAndMatch
-                var remoteService = new RemoteService();
-                
-                // create the MixAndMatch instance
-                mixAndMatch = new MixAndMatch(remoteService);
-
-                // bind an event handler to the drop-down to save the selected value
-                $('#select-choice-1').change(function(object) {
-                    log.info("selected");
-                    log.info("Objekt:", $(this).val());
-                    // html5 feature to persitent values
-                    localStorage["defaultLocation"] = $(this).val();
-                });
-
-                // bind "checkin()" method of MixAndMatch to the click event of the button
-                $('#checkinButton').click(
-				mixAndMatch.getLocations
-			);
 
             });
-
 
         </script>
 
@@ -50,7 +28,9 @@
                 <ul data-role="listview" data-inset="true">
                     <li><a href="checkin.html" rel="external">Check In</a></li>
                     <li><a href="status.html" rel="external">Request Status</a></li>
+					<!--
                     <li><a href="#TestCheckIn">Test Check in</a></li>
+					-->
                 </ul>
             </div>
 
@@ -59,7 +39,7 @@
             </div>
         </div>
 
-
+<!--
         <div data-role="page" id="TestCheckIn">
             <div data-role="header" data-theme="b">
                 <h1>Check in</h1>
@@ -76,6 +56,7 @@
                 <h4>HTML5-Team</h4>
             </div>
         </div>
+-->
 
     </body>
 </html>

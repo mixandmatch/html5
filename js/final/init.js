@@ -15,7 +15,8 @@ function configureLogging() {
 	logRoot.addAppender(appender);
 	logRoot.setLevel(log4javascript.Level.OFF);
 	logRoot.setLevel(log4javascript.Level.DEBUG);
-	log4javascript.setEnabled(true);
+
+	log4javascript.setEnabled(false);
 
 	// Define log levels
 	/*

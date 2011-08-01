@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Mix and Match mit jQuery Mobile</title>
+
+        <script type="text/javascript" src="../../js/CommonHeaderLibs.js"></script>
+
+        <script type="text/javascript">
+            
+			var mixAndMatch;
+ 		
+            $(document).ready(function(){
+				configureLogging();
+        		
+				var remote = new RemoteServiceValidator();
+				remote.addUrl('http://192.168.99.23:8080');
+                remote.addUrl('http://ec2-46-137-12-115.eu-west-1.compute.amazonaws.com/api');
+				//                remote.addUrl('http://twitter.com/statuses/friends/wadenkrampf.json?callback=?');
+                remote.validate(function(data) {
+                    log.info("Data:", JSON.stringify(data));
+					var content = remote.createResultTable();
+					$('#myDiv').append(content);
+					
+					var bestBackend = remote.getBestBackend();
+					$('#myDiv').append('<br>Best backend: ' +bestBackend);
+                });
+
+            });
+ 		
+ 
+        </script>
+    </head>
+    <body>
+
+        <div data-role="page">
+
+            <div data-role="content">
+                <div>
+					Testseite zum rumspielen
+                </div>
+                <div id="myDiv">
+                    <!-- will be filled by javascript -->
+                </div>
+                <br/>
+
+			</div>
+    </body>
+</html>

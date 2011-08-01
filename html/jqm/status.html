@@ -3,11 +3,10 @@
     <head>
         <title>Mix and Match mit jQuery Mobile</title>
 
-        <script type="text/javascript" src="../../js/LibService.js"></script>
         <script type="text/javascript" src="../../js/CommonHeaderLibs.js"></script>
+		<script type="text/javascript" src="../../js/CommonHeaderInit.js"></script>
 
         <script type="text/javascript">
-            var mixAndMatch;
  		
             $(document).ready(function(){
         		
@@ -15,14 +14,8 @@
                 var userRequestData = storageService.getSavedUserRequestObject();
                 showUserRequestObject(userRequestData);
                 
-                // create the remote service object which should be used in MixAndMatch
-                var remoteService = new RemoteService();
-                
-                // create the MixAndMatch instance
-                mixAndMatch = new MixAndMatch(remoteService);
-                
-                // get the lunch response
-                mixAndMatch.getLunchResponse(showResponse, userRequestData);
+				// get the lunch response
+                mixAndMatch.getAllLunchRequests(showResponse);
             });
  		
             function showUserRequestObject(userRequestData){
@@ -58,14 +51,14 @@
 
             <div data-role="content">
                 <div>
-					Your last request:
+					Ihre letzte Anmeldung:
                 </div>
                 <div id="requestData">
                     <!-- will be filled by javascript -->
                 </div>
                 <br/>
                 <div>
-					The next events:
+					Anstehende Verabredungen:
                 </div>
                 <div id="responseData">
                     <!-- will be filled by javascript -->
