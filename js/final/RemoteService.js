@@ -4,7 +4,7 @@
 function RemoteService(pBackendUrl) {
 
 	/** private property for logging */
-	var log = log4javascript.getLogger('de.html5.RemoteServiceDummy');
+	var log = log4javascript.getLogger('de.html5.RemoteService');
 	
 	var backend = pBackendUrl;
 
@@ -21,7 +21,7 @@ function RemoteService(pBackendUrl) {
 			pCallback(data);
 		});
 	}
-
+	
 	/**
      * call the backend to get a list of all lunch responses
      */
@@ -59,7 +59,21 @@ function RemoteService(pBackendUrl) {
 			log.debug("Response data:", JSON.stringify(data));
 			pCallback(data);
 		});
-	}	
+	}
+
+	/**
+     * call the backend to get a list of all lunch responses
+     */
+	this.getMatchDetails = function(pCallback, pMatchUrl) {
+		log.debug('getMatchDetails() matchUrl:', pMatchUrl);
+		var url = backend + pMatchUrl+ '?callback=?'
+
+		$.getJSON(url, function(data) {
+			log.debug("Response data:", JSON.stringify(data));
+			pCallback(data);
+		});
+	}
+
 
 	/**
      * call the backend to get a list of all lunch responses
@@ -83,6 +97,6 @@ function RemoteService(pBackendUrl) {
 	}
 
 	/** use the private log object */
-	log.debug('RemoteServiceDummy created');
+	log.debug('RemoteService created');
 }
 

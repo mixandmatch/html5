@@ -15,30 +15,54 @@
                 showUserRequestObject(userRequestData);
                 
 				// get the lunch response
-                mixAndMatch.getAllLunchRequests(showResponse);
+                //mixAndMatch.getAllLunchRequests(showResponse);
+				mixAndMatch.getLunchRequestsByUser(showUserRequests, userRequestData.name);
             });
  		
             function showUserRequestObject(userRequestData){
                 $('#requestData').html(
                 userRequestData.name + ", " +
                     userRequestData.email + ", "+
-                    userRequestData.date + ", " +
+                    Utils.convertDate(userRequestData.date, Utils.dateFormatInternal, Utils.dateFormatGui) + ", " +
                     userRequestData.place);
+			}
+			
+			function showUserRequests(userRequestsData) {
+				log.debug('log showUserRequests()');
+				
+				var content = '<table border="1">';
+				$.each(userRequestsData, function(index, entry) {
+					log.debug('log entry:', index);
+					content += '<tr>';
+					content += '<td>' +Utils.convertDate(entry.date, Utils.dateFormatInternal, Utils.dateFormatGui)+ '</td>';
+					content += '<td>' +mixAndMatch.getLocationName(entry.locationKey)+ '</td>';
+					content += '<td><a href="javascript:showDetailInformations(\''+entry.matchUrl+'\')">Teilnehmerliste</a></td>';
+					content += '</tr>';
+				});
+				content += '</table>';
+
+                $('#responseData').html(content);
             }
-        
-            function showResponse(responseDataArray) {
-        	
-                var dynamicHtml= '<ul>'
-                for(var i=0;i<responseDataArray.length;i++){
-                    dynamicHtml += '<li>'
-                    var responseData = responseDataArray[i];
-                    dynamicHtml += responseData.locationKey + ", " + responseData.date + ", " + responseData.userid;
-                    dynamicHtml += '</li>'
-                }
-                dynamicHtml += '</ul>'
-        	
-                $('#responseData').html(dynamicHtml);
+			
+			function showDetailInformations(pMatchUrl) {
+				log.debug('log showDetailInformations() matchUrl:', pMatchUrl);
+				
+				mixAndMatch.getMatchDetails(function(pMatchDetails) {
+
+					var content = '<table border="1">';
+					$.each(pMatchDetails, function(index, entry) {
+						log.debug('log entry:', index);
+						content += '<tr>';
+						content += '<td>' +entry.userid+ '</td>';
+						content += '</tr>';
+					});
+					content += '</table>';
+
+					$('#detailData').html(content);
+					
+				}, pMatchUrl);
             }
+			
         </script>
     </head>
     <body>
@@ -58,9 +82,16 @@
                 </div>
                 <br/>
                 <div>
-					Anstehende Verabredungen:
+					Ihre anstehenden Verabredungen:
                 </div>
                 <div id="responseData">
+                    <!-- will be filled by javascript -->
+                </div>
+                <br/>
+                <div>
+					Teilnehmer:
+                </div>
+                <div id="detailData">
                     <!-- will be filled by javascript -->
                 </div>
             </div>

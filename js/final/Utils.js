@@ -9,28 +9,20 @@ function UtilsClass() {
 	/** private property for logging */
 	var log = log4javascript.getLogger("de.html5.Utils");
 	
-	var dateFormatGui      = 'MM/dd/yyyy';
-	var dateFormatInternal = 'yyyyMMdd';
-
+	this.dateFormatDatepicker = 'MM/dd/yyyy';
+	this.dateFormatInternal   = 'yyyyMMdd';
+	this.dateFormatGui        = 'dd.MM.yyyy';
+	
 	/**
 	 * Util method to convert date strings.
 	 */
-	this.convertGuiDateToInternalDate = function(pGuiDate) {
-		log.debug('convertGuiDateToInternalDate() guiDate:', pGuiDate);
-		var date = new Date(getDateFromFormat(pGuiDate, dateFormatGui));
-		var internalDate = formatDate(date, dateFormatInternal);
-		log.debug("internal date:", internalDate);
-		return internalDate;
-	}
-	
-	this.convertInternalDateToGuiDate = function(pInternalDate) {
-		log.debug('convertInternalDateToGuiDate() internalDate:', pInternalDate);
-		var date = new Date(getDateFromFormat(pInternalDate, dateFormatInternal));
-		var guiDate = formatDate(date, dateFormatGui);
-		log.debug("gui date:", guiDate);
-		return guiDate;
+	this.convertDate = function(pDate, pFormatFrom, pFormatTo) {
+		log.debug('convertDate() date:' +pDate+ ', from:' +pFormatFrom+ ', to:' +pFormatTo);
+		var date = new Date(getDateFromFormat(pDate, pFormatFrom));
+		var newDate = formatDate(date, pFormatTo);
+		log.debug("internal date:", newDate);
+		return newDate;
 	}
 }
 
 var Utils = new UtilsClass();
-

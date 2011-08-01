@@ -16,7 +16,7 @@ function configureLogging() {
 	logRoot.setLevel(log4javascript.Level.OFF);
 	logRoot.setLevel(log4javascript.Level.DEBUG);
 
-	log4javascript.setEnabled(false);
+	log4javascript.setEnabled(true);
 
 	// Define log levels
 	/*
