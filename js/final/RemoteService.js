@@ -5,6 +5,9 @@ function RemoteService() {
 
 	/** private property for logging */
 	var log = log4javascript.getLogger('de.html5.RemoteServiceDummy');
+	
+	var backend = 'http://ec2-46-137-12-115.eu-west-1.compute.amazonaws.com/api';
+	//var backend = 'http://mixmatch-t.elasticbeanstalk.com/locations?callback=?';
 
 	/**
      * call the backend to get a list of available locations
@@ -13,7 +16,7 @@ function RemoteService() {
 		log.debug('getLocations()');
 
 		// jQuery Ajax call with an anonymous callback function
-		$.getJSON('http://mixmatch-t.elasticbeanstalk.com/locations?callback=?', function(data) {
+		$.getJSON(backend + '/locations?callback=?', function(data) {
 			log.debug("Location data:", JSON.stringify(data));
 			// execute the callback parameter to get back to the MixAndMatch object
 			pCallback(data);
@@ -24,7 +27,7 @@ function RemoteService() {
      * call the backend to get a list of all lunch responses
      */
 	this.getLunchResponse = function(pCallback, userRequestObject) {
-		var url = 'http://mixmatch-t.elasticbeanstalk.com/requests?callback=?'
+		var url = backend + '/requests?callback=?'
 
 		$.getJSON(url, function(data) {
 			log.debug("Response data:", JSON.stringify(data));
