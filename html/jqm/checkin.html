@@ -82,6 +82,7 @@
 			
 			function callback(responseDataArray) {
 				log.debug("createLunchRequest response: ", JSON.stringify(responseDataArray));
+				$.mobile.changePage( "status.html" );
             }
 
         </script>
@@ -100,10 +101,12 @@
                     <label for="name">Name:</label>
                     <input type="text" name="name" id="name" value="" />
                 </div>
+				<!--
                 <div data-role="fieldcontain">
                     <label for="email">Email:</label>
                     <input type="email" name="email" id="email" value="" />
                 </div>
+				-->
                 <div data-role="fieldcontain">
                     <label for="date">Date Input:</label>
                     <input type="date" name="date" id="date" value="" />

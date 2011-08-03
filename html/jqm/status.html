@@ -9,16 +9,38 @@
         <script type="text/javascript">
  		
             $(document).ready(function(){
-        		
+
                 var storageService = new StorageService();
                 var userRequestData = storageService.getSavedUserRequestObject();
-                showUserRequestObject(userRequestData);
+				$('#name').val(userRequestData.name);
+                //showUserRequestObject(userRequestData);
                 
 				// get the lunch response
                 //mixAndMatch.getAllLunchRequests(showResponse);
-				mixAndMatch.getLunchRequestsByUser(showUserRequests, userRequestData.name);
+				//mixAndMatch.getLunchRequestsByUser(showUserRequests, userRequestData.name);
+				
+				// preload locations
+				mixAndMatch.getLocations(function(pData){
+					// if there is a name, load user requests
+					if (userRequestData.name != '') {
+						loadUserRequests();
+					}
+				});
+				
+				// bind "button"
+                $('#getStatusButton').click(loadUserRequests);
             });
  		
+			function loadUserRequests(){
+				$('#responseData').html('... loading data ...');
+				var storageService = new StorageService();
+				var userRequestData = storageService.getSavedUserRequestObject();
+				userRequestData.name = $('#name').val();
+				storageService.saveUserRequestObject(userRequestData);
+					
+				mixAndMatch.getLunchRequestsByUser(showUserRequests, userRequestData.name);
+			}
+		
             function showUserRequestObject(userRequestData){
                 $('#requestData').html(
                 userRequestData.name + ", " +
@@ -74,13 +96,19 @@
             </div>
 
             <div data-role="content">
-                <div>
+                <div data-role="fieldcontain">
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" id="name" value="" />
+                </div>
+				<button id="getStatusButton">Status laden</button>
+				<!--
+				<div>
 					Ihre letzte Anmeldung:
                 </div>
                 <div id="requestData">
-                    <!-- will be filled by javascript -->
                 </div>
                 <br/>
+				-->
                 <div>
 					Ihre anstehenden Verabredungen:
                 </div>
