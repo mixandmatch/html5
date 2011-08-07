@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html>
     <head>
+		<meta content="width=device-width,minimum-scale=1,maximum-scale=1" name="viewport"></meta>
+
         <title>Mix and Match mit jQuery Mobile</title>
 
         <script type="text/javascript" src="../../js/CommonHeaderLibs.js"></script>
@@ -54,7 +56,7 @@
 				
 				var content = '<table border="1">';
 				$.each(userRequestsData, function(index, entry) {
-					log.debug('log entry:', index);
+					log.debug('handle log entry:', index);
 					content += '<tr>';
 					content += '<td>' +Utils.convertDate(entry.date, Utils.dateFormatInternal, Utils.dateFormatGui)+ '</td>';
 					content += '<td>' +mixAndMatch.getLocationName(entry.locationKey)+ '</td>';
@@ -92,10 +94,11 @@
         <div data-role="page">
             <div data-role="header" data-theme="b">
                 <a href="index.html" rel="external" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left">Back</a>
-                <h1>Request Status</h1>
+                <h1>Status</h1>
             </div>
 
             <div data-role="content">
+				<h3 align="center">Status Ihrer Verabredungen</h3>
                 <div data-role="fieldcontain">
                     <label for="name">Name:</label>
                     <input type="text" name="name" id="name" value="" />
@@ -125,7 +128,7 @@
             </div>
 
             <div data-role="footer">
-                <h4>HTML5-Team</h4>
+                <h4>HTML Client</h4>
             </div>
         </div>
     </body>

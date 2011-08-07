@@ -1,10 +1,14 @@
 <!DOCTYPE HTML>
 <html>
     <head>
+		<meta content="width=device-width,minimum-scale=1,maximum-scale=1" name="viewport"></meta>
+
         <title>Mix and Match mit jQuery Mobile</title>
 
         <script type="text/javascript" src="../../js/CommonHeaderLibs.js"></script>
+		<!--
 		<script type="text/javascript" src="../../js/DatePickerLibs.js"></script>
+		-->
 		<script type="text/javascript" src="../../js/CommonHeaderInit.js"></script>
 
 		<!-- 
@@ -21,19 +25,21 @@
                 var userRequestObject = storageService.getSavedUserRequestObject();
                 $('#name').val(userRequestObject.name);
                 $('#email').val(userRequestObject.email);
-                $('#date').val(Utils.convertDate($('#date').val(), Utils.dateFormatInternal, Utils.dateFormatDatepicker));
+				//$('#date').val(Utils.convertDate($('#date').val(), Utils.dateFormatInternal, Utils.dateFormatDatepicker));
+                //$('#date').val(Utils.convertDate(userRequestObject.date, Utils.dateFormatInternal, Utils.dateFormatGui));
+                $('#date').val(Utils.formatDate(new Date(), Utils.dateFormatDatepicker));
                 $('#select-choice-1').val(userRequestObject.place);
 
                 //-------------------------------------------------------------------------
                 // DatePicker functionality
                 // http://pinoytech.org/question/4886672/jquery-mobile-override-jquery-ui-datepicker-layout-broken
 				/*
-				 */
                 $('#date').next().hide();
 
                 $('#date').focus(function() {
                     $('#date').next().show('slow');
                 });
+				 */
 
 				/*
 				mobiscroller: http://code.google.com/p/mobiscroll/
@@ -42,9 +48,11 @@
 
 
                 // .live() event importantor else clicks stop functioning
+				/*
                 $( '.ui-body-c a' ).live('click', function() {
                     $( '#date' ).next().hide('slow');
                 });
+				 */
 
                 //-------------------------------------------------------------------------
 
@@ -56,20 +64,32 @@
                     userRequestObject.name = $('#name').val();
                     userRequestObject.email = $('#email').val();
                     userRequestObject.date = Utils.convertDate($('#date').val(), Utils.dateFormatDatepicker, Utils.dateFormatInternal);
+                    //userRequestObject.date = Utils.convertDate($('#date').val(), Utils.dateFormatGui, Utils.dateFormatInternal);
                     userRequestObject.place = $('#location-choice').val();
 
                     // save the object in the local storage
                     storageService.saveUserRequestObject(userRequestObject);
 					mixAndMatch.createLunchRequest(callback, userRequestObject);
 
-                    alert('Check in successful!');
+                    alert('Verabredung erstellt. Mehr Infos auf der Statusseite.');
                 });
+				
+				$('#location-choice').change(locationChanged);
 
 				//                var remoteService = new RemoteService();
 				//                var mixAndMatch = new MixAndMatch(remoteService);
                 mixAndMatch.getLocations(showLocations);
             });
 
+			function locationChanged(){
+				log.debug('locationChanged');
+				var locationId = $('#location-choice').val();
+				var location = mixAndMatch.getLocation(locationId);
+				var text = 'Treffpunkt: ' + location.venue;
+				$('#locationDetails').html(text);
+				log.debug('Text:', text);
+			}
+			
             function showLocations(responseDataArray) {
 
                 $.each(responseDataArray, function(i, j){
@@ -78,11 +98,14 @@
                 });
 
                 $("#location-choice").selectmenu('refresh', true);
+				
+				// call changed method to show location details
+				locationChanged();
             }
 			
 			function callback(responseDataArray) {
 				log.debug("createLunchRequest response: ", JSON.stringify(responseDataArray));
-				$.mobile.changePage( "status.html" );
+				//$.mobile.changePage( "status.html" );
             }
 
         </script>
@@ -93,10 +116,11 @@
         <div data-role="page">
             <div data-role="header" data-theme="b">
                 <a href="index.html" rel="external" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left">Back</a>
-                <h1>Check in</h1>
+                <h1>Erstellen</h1>
             </div>
 
             <div data-role="content">
+				<h3 align="center">Verabredung erstellen</h3>
                 <div data-role="fieldcontain">
                     <label for="name">Name:</label>
                     <input type="text" name="name" id="name" value="" />
@@ -108,18 +132,19 @@
                 </div>
 				-->
                 <div data-role="fieldcontain">
-                    <label for="date">Date Input:</label>
+                    <label for="date">Datum:</label>
                     <input type="date" name="date" id="date" value="" />
                 </div>
                 <div data-role="fieldcontain">
-                    <label for="location-choice" class="select">Default Ort:</label>
+                    <label for="location-choice" class="select">Ort:</label>
                     <select name="location-choice" id="location-choice"></select>
+					<div id="locationDetails">Treffpunkt am Ort.</div>
                 </div>
                 <button id="checkinButton">Check in</button>
             </div>
 
             <div data-role="footer">
-                <h4>HTML5-Team</h4>
+                <h4>HTML Client</h4>
             </div>
         </div>
     </body>

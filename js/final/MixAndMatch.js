@@ -31,39 +31,49 @@ function MixAndMatch(pRemoteService) {
 	this.getLocations = function(callback) {
 		log.debug('getLocations');
 		this.remoteService.getLocations(function(pData) {
-			this.locations = pData;
+			that.locations = pData;
 			callback(pData);
 		});
 	}
 	
 	this.getLocationName = function(pLocationId) {
-		log.debug('getLocationName');
+		log.debug('getLocationName() id:', pLocationId);
+		
+		return this.getLocation(pLocationId).label;
+	}
+	
+	this.getLocation = function(pLocationId) {
+		log.debug('getLocation() id:', pLocationId);
 		
 		// TODO locations laden falls noch nicht geschehen
 		
-		var locationName = pLocationId;
+		var location;
 		if (this.locations != null) {
-			locationName = this.getLocationNamePrivate(pLocationId, this.locations);
+			location = this.getLocationPrivate(pLocationId, this.locations);
 		} else {
 			log.error('location list not loaded. Can not determine location name.');
 		}
 		
-		return locationName;
+		log.debug('getLocation() - found location label:', location.label);
+		return location;
 	}
+
 	
 	/**
 	 * @private
 	 */
-	this.getLocationNamePrivate = function(pLocationId, pLocationList) {
-		log.debug('getLocationNamePrivate');
+	this.getLocationPrivate = function(pLocationId, pLocationList) {
+		log.debug('getLocationPrivate() id:', pLocationId);
 
-		var locationName = pLocationId;
+		var location;
 		$.each(pLocationList, function(pIndex, pEntry) {
 			if (pEntry.key.toLowerCase() == pLocationId.toLowerCase()) {
-				locationName = pEntry.label;
+				location = pEntry;
 			}
 		});
-		return locationName;
+		
+		log.debug('getLocationPrivate() - found location label:', location.label);
+		return location;
 	}
 
 	/**
@@ -80,13 +90,15 @@ function MixAndMatch(pRemoteService) {
 	this.getLunchRequestsByUser = function(pCallback, pUserid) {
 		log.debug('getLunchRequestsByUser()');
 		
+		var userId = this.normUserid(pUserid);
+		
 		if (this.locations == null) {
 			this.remoteService.getLocations(function(pLocationList) {
 				that.locations = pLocationList;
-				that.remoteService.getLunchRequestsByUser(pCallback, pUserid);
+				that.remoteService.getLunchRequestsByUser(pCallback, userId);
 			});
 		} else {
-			this.remoteService.getLunchRequestsByUser(pCallback, pUserid);
+			this.remoteService.getLunchRequestsByUser(pCallback, userId);
 		}
 	}
 	
@@ -110,7 +122,16 @@ function MixAndMatch(pRemoteService) {
      */
 	this.createLunchRequest = function(callback, userDataObject) {
 		log.debug('createLunchRequest()');
+		userDataObject.name = this.normUserid(userDataObject.name);
 		this.remoteService.createLunchRequest(callback, userDataObject);
+	}
+	
+	/**
+	 * Convert to lower case
+	 * @private
+	 */
+	this.normUserid = function(userId) {
+		return userId.toLowerCase();
 	}
 
 	/** use the private log object */

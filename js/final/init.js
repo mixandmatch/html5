@@ -13,25 +13,21 @@ function configureLogging() {
 	var layout = new log4javascript.PatternLayout("%d{HH:mm:ss} %-5p %-40c - %m%n");
 	appender.setLayout(layout);
 	logRoot.addAppender(appender);
-	logRoot.setLevel(log4javascript.Level.OFF);
+	//logRoot.setLevel(log4javascript.Level.OFF);
 	logRoot.setLevel(log4javascript.Level.DEBUG);
-
-	log4javascript.setEnabled(true);
+	log4javascript.setEnabled(false);
 
 	// Define log levels
-	/*
-	var urlParams = mamGetUrlVars();
-	if (urlParams.mamLogging) {
-		$.cookie('mamLogging', urlParams.mamLogging, {path: '/', expires: 1} );
+	var urlParams = getUrlVars();
+	if (urlParams.logging) {
+		$.cookie('logging', urlParams.logging, {path: '/', expires: 1} );
 	}
 
-	var cookieMamLogging = $.cookie('mamLogging');
-	if (cookieMamLogging === 'true') {
+	var cookieLogging = $.cookie('logging');
+	if (cookieLogging == 'true') {
 		log4javascript.setEnabled(true);
-		logRoot.setLevel(log4javascript.Level.ERROR);
-		log4javascript.getLogger("de.mixandmatch").setLevel(log4javascript.Level.DEBUG);
+		log4javascript.getLogger("de.html5").setLevel(log4javascript.Level.DEBUG);
 	}
-	*/
 	logRoot.info("Logging loaded and configured.");
     
 	// the logRoot logger is also known global as "log"
