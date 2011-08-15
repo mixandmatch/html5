@@ -24,9 +24,10 @@ function configureLogging() {
 	}
 
 	var cookieLogging = $.cookie('logging');
+	//cookieLogging = 'true';
 	if (cookieLogging == 'true') {
 		log4javascript.setEnabled(true);
-		log4javascript.getLogger("de.html5").setLevel(log4javascript.Level.DEBUG);
+		log4javascript.getLogger("de.html5").setLevel(log4javascript.Level.TRACE);
 	}
 	logRoot.info("Logging loaded and configured.");
     

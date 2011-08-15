@@ -13,9 +13,11 @@ function RemoteService(pBackendUrl) {
      */
 	this.getLocations = function(pCallback) {
 		log.debug('getLocations()');
+		var url = backend + '/locations?callback=?';
+		log.trace('url:', url);
 
 		// jQuery Ajax call with an anonymous callback function
-		$.getJSON(backend + '/locations?callback=?', function(data) {
+		$.getJSON(url, function(data) {
 			log.debug("Location data:", JSON.stringify(data));
 			// execute the callback parameter to get back to the MixAndMatch object
 			pCallback(data);
@@ -30,7 +32,7 @@ function RemoteService(pBackendUrl) {
 		var url = backend + '/requests?callback=?'
 
 		$.getJSON(url, function(data) {
-			log.debug("Response data:", JSON.stringify(data));
+			log.debug("getAllLunchRequests data:", JSON.stringify(data));
 			pCallback(data);
 		});
 	}
@@ -40,7 +42,8 @@ function RemoteService(pBackendUrl) {
      */
 	this.getLunchRequestsByUser = function(pCallback, pUserid) {
 		log.debug('getLunchRequestsByUser() user:', pUserid);
-		var url = backend + '/users/' +pUserid+ '?callback=?'
+		var url = backend + '/users/' +pUserid+ '?callback=?';
+		log.trace('url:', url);
 
 		$.getJSON(url, function(data) {
 			log.debug("Response data:", JSON.stringify(data));

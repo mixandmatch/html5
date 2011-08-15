@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+		<meta content="width=device-width,minimum-scale=1,maximum-scale=1" name="viewport"></meta>
+        <title>Mix and Match mit jQuery Mobile</title>
+    </head>
+
+    <body>
+
+        <div data-role="page" id="pageAll">
+            <div data-role="header" data-theme="b">
+                <a href="index.html" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left">Back</a>
+                <h1>Alle Verabredungen</h1>
+            </div>
+
+            <div data-role="content">
+				<h3 align="center">Alle Verabredungen</h3>
+
+				<p>Wenn ich mal Zeit habe, ...</p>
+				<p>Oder gibt es andere Freiwillge f&uuml;r diesen Punkt?</p>
+
+                <div id="responseData">
+                </div>
+                <br/>
+                <div>
+					Teilnehmer:
+                </div>
+                <div id="detailData">
+				</div>
+            </div>
+
+            <div data-role="footer">
+                <h4>HTML Client</h4>
+            </div>
+
+			<script type="text/javascript">
+
+				$('#pageAll').live('pagecreate', function(pEvent){
+					log.debug('pagecreate');
+					mixAndMatch.getLocations(function(pData){
+						loadAllRequests();
+					});
+				});
+			
+				function loadAllRequests(){
+					$('#responseData').html('... loading data ...');
+					mixAndMatch.getAllLunchRequests(showAllRequests);
+				}
+		
+				function showAllRequests(userRequestsData) {
+					log.debug('log showAllRequests()');
+				
+					var content = '<table border="1">';
+					$.each(userRequestsData, function(index, entry) {
+						log.debug('handle log entry:', index);
+						content += '<tr>';
+						content += '<td>' +Utils.convertDate(entry.date, Utils.dateFormatInternal, Utils.dateFormatGui)+ '</td>';
+						content += '<td>' +mixAndMatch.getLocationName(entry.locationKey)+ '</td>';
+						content += '<td>' +entry.userid+ '</td>';
+						content += '</tr>';
+					});
+					content += '</table>';
+
+					$('#responseData').html(content);
+				}
+			
+				function showDetailInformations(pMatchUrl) {
+					log.debug('log showDetailInformations() matchUrl:', pMatchUrl);
+				
+					mixAndMatch.getMatchDetails(function(pMatchDetails) {
+
+						var content = '<table border="1">';
+						$.each(pMatchDetails, function(index, entry) {
+							log.debug('log entry:', index);
+							content += '<tr>';
+							content += '<td>' +entry.userid+ '</td>';
+							content += '</tr>';
+						});
+						content += '</table>';
+
+						$('#detailData').html(content);
+					
+					}, pMatchUrl);
+				}
+			
+			</script>
+        </div>
+    </body>
+</html>
