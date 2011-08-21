@@ -1,151 +1,95 @@
 <!DOCTYPE HTML>
 <html>
+
     <head>
 		<meta content="width=device-width,minimum-scale=1,maximum-scale=1" name="viewport"></meta>
-
         <title>Mix and Match mit jQuery Mobile</title>
-
-        <script type="text/javascript" src="../../js/CommonHeaderLibs.js"></script>
-		<!--
-		<script type="text/javascript" src="../../js/DatePickerLibs.js"></script>
-		-->
-		<script type="text/javascript" src="../../js/CommonHeaderInit.js"></script>
-
-		<!-- 
-		<script type="text/javascript" src="../../js/lib/jquery.scroller-1.0.2.min.js"></script>
-		<link rel="stylesheet" href="../../css/jqm/jquery.scroller-1.0.2.min.css" type="text/css"></link>
-		-->
-
-        <script type="text/javascript">
-
-            $(document).ready(function(){
-                var storageService = new StorageService();
-
-                // try to load the old values
-                var userRequestObject = storageService.getSavedUserRequestObject();
-                $('#name').val(userRequestObject.name);
-                $('#email').val(userRequestObject.email);
-				//$('#date').val(Utils.convertDate($('#date').val(), Utils.dateFormatInternal, Utils.dateFormatDatepicker));
-                //$('#date').val(Utils.convertDate(userRequestObject.date, Utils.dateFormatInternal, Utils.dateFormatGui));
-                $('#date').val(Utils.formatDate(new Date(), Utils.dateFormatDatepicker));
-                $('#select-choice-1').val(userRequestObject.place);
-
-                //-------------------------------------------------------------------------
-                // DatePicker functionality
-                // http://pinoytech.org/question/4886672/jquery-mobile-override-jquery-ui-datepicker-layout-broken
-				/*
-                $('#date').next().hide();
-
-                $('#date').focus(function() {
-                    $('#date').next().show('slow');
-                });
-				 */
-
-				/*
-				mobiscroller: http://code.google.com/p/mobiscroll/
-				$('#date').scroller();
-				 */
-
-
-                // .live() event importantor else clicks stop functioning
-				/*
-                $( '.ui-body-c a' ).live('click', function() {
-                    $( '#date' ).next().hide('slow');
-                });
-				 */
-
-                //-------------------------------------------------------------------------
-
-                // bind "checkin()" method of MixAndMatch to the click event of the button
-                $('#checkinButton').click(function(){
-                    // save the attributes in the local storage
-                    var userRequestObject = new UserRequestObject();
-
-                    userRequestObject.name = $('#name').val();
-                    userRequestObject.email = $('#email').val();
-                    userRequestObject.date = Utils.convertDate($('#date').val(), Utils.dateFormatDatepicker, Utils.dateFormatInternal);
-                    //userRequestObject.date = Utils.convertDate($('#date').val(), Utils.dateFormatGui, Utils.dateFormatInternal);
-                    userRequestObject.place = $('#location-choice').val();
-
-                    // save the object in the local storage
-                    storageService.saveUserRequestObject(userRequestObject);
-					mixAndMatch.createLunchRequest(callback, userRequestObject);
-
-                    alert('Verabredung erstellt. Mehr Infos auf der Statusseite.');
-                });
-				
-				$('#location-choice').change(locationChanged);
-
-				//                var remoteService = new RemoteService();
-				//                var mixAndMatch = new MixAndMatch(remoteService);
-                mixAndMatch.getLocations(showLocations);
-            });
-
-			function locationChanged(){
-				log.debug('locationChanged');
-				var locationId = $('#location-choice').val();
-				var location = mixAndMatch.getLocation(locationId);
-				var text = 'Treffpunkt: ' + location.venue;
-				$('#locationDetails').html(text);
-				log.debug('Text:', text);
-			}
-			
-            function showLocations(responseDataArray) {
-
-                $.each(responseDataArray, function(i, j){
-                    var row = "<option value=\"" + j.key + "\">" + j.label + "</option>";
-                    $(row).appendTo("select#location-choice");
-                });
-
-                $("#location-choice").selectmenu('refresh', true);
-				
-				// call changed method to show location details
-				locationChanged();
-            }
-			
-			function callback(responseDataArray) {
-				log.debug("createLunchRequest response: ", JSON.stringify(responseDataArray));
-				//$.mobile.changePage( "status.html" );
-            }
-
-        </script>
-
     </head>
+
     <body>
 
-        <div data-role="page">
+        <div data-role="page" id="pageCheckin">
             <div data-role="header" data-theme="b">
-                <a href="index.html" rel="external" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left">Back</a>
+				<a href="./index.html" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-left jqm-home">Home</a>
                 <h1>Erstellen</h1>
             </div>
 
             <div data-role="content">
 				<h3 align="center">Verabredung erstellen</h3>
-                <div data-role="fieldcontain">
-                    <label for="name">Name:</label>
-                    <input type="text" name="name" id="name" value="" />
-                </div>
-				<!--
-                <div data-role="fieldcontain">
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" id="email" value="" />
-                </div>
-				-->
+
                 <div data-role="fieldcontain">
                     <label for="date">Datum:</label>
                     <input type="date" name="date" id="date" value="" />
                 </div>
+
                 <div data-role="fieldcontain">
                     <label for="location-choice" class="select">Ort:</label>
-                    <select name="location-choice" id="location-choice"></select>
+                    <select name="location-choice" id="locationSelect"></select>
 					<div id="locationDetails">Treffpunkt am Ort.</div>
                 </div>
+
                 <button id="checkinButton">Check in</button>
             </div>
 
             <div data-role="footer">
                 <h4>HTML Client</h4>
             </div>
+
+			<script type="text/javascript">
+
+				JqmUtil.live('pageCheckin', 'pageshow', function(){
+					mixAndMatch.getLocations(showLocationsCallback);
+				});
+				
+				JqmUtil.live('pageCheckin', 'pagecreate', function(){
+
+					var location = localStorage["location"];
+					$('#locationSelect').val(location);
+					$('#date').val(Utils.formatDate(new Date(), Utils.dateFormatDatepicker));
+                
+					// bind "checkin()" method of MixAndMatch to the click event of the button
+					$('#checkinButton').click(function(){
+						localStorage["location"] = $('#locationSelect').val();
+						var date = Utils.convertDate($('#date').val(), Utils.dateFormatDatepicker, Utils.dateFormatInternal);
+						var locationId = $('#locationSelect').val();
+						mixAndMatch.createLunchRequest(date, locationId, createLunchRequestCallback);
+					});
+				
+					$('#locationSelect').change(locationChangedCallback);
+				});
+
+				function locationChangedCallback(){
+					log.debug('locationChangedCallback()');
+					var locationId = $('#locationSelect').val();
+					var location = mixAndMatch.getLocation(locationId);
+					var text = 'Treffpunkt: ' + location.venue;
+					$('#locationDetails').html(text);
+					log.debug('Text:', text);
+				}
+			
+				function showLocationsCallback(responseDataArray) {
+					log.debug('showLocationsCallback()');
+
+					$.each(responseDataArray, function(i, j){
+						var row = "<option value=\"" + j.key + "\">" + j.label + "</option>";
+						$(row).appendTo("select#locationSelect");
+					});
+
+					$("#locationSelect").selectmenu('refresh', true);
+				
+					// call changed method to show location details
+					locationChangedCallback();
+				}
+			
+				function createLunchRequestCallback(responseDataArray) {
+					log.debug("createLunchRequestCallback() response: ", JSON.stringify(responseDataArray));
+					$.mobile.changePage("./status.html");
+				}
+
+			</script>
+
         </div>
+
     </body>
+
 </html>

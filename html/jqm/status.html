@@ -2,116 +2,19 @@
 <html>
     <head>
 		<meta content="width=device-width,minimum-scale=1,maximum-scale=1" name="viewport"></meta>
-
-        <title>Mix and Match mit jQuery Mobile</title>
-
-        <script type="text/javascript" src="../../js/CommonHeaderLibs.js"></script>
-		<script type="text/javascript" src="../../js/CommonHeaderInit.js"></script>
-
-        <script type="text/javascript">
- 		
-            $(document).ready(function(){
-
-                var storageService = new StorageService();
-                var userRequestData = storageService.getSavedUserRequestObject();
-				$('#name').val(userRequestData.name);
-                //showUserRequestObject(userRequestData);
-                
-				// get the lunch response
-                //mixAndMatch.getAllLunchRequests(showResponse);
-				//mixAndMatch.getLunchRequestsByUser(showUserRequests, userRequestData.name);
-				
-				// preload locations
-				mixAndMatch.getLocations(function(pData){
-					// if there is a name, load user requests
-					if (userRequestData.name != '') {
-						loadUserRequests();
-					}
-				});
-				
-				// bind "button"
-                $('#getStatusButton').click(loadUserRequests);
-            });
- 		
-			function loadUserRequests(){
-				$('#responseData').html('... loading data ...');
-				var storageService = new StorageService();
-				var userRequestData = storageService.getSavedUserRequestObject();
-				userRequestData.name = $('#name').val();
-				storageService.saveUserRequestObject(userRequestData);
-					
-				mixAndMatch.getLunchRequestsByUser(showUserRequests, userRequestData.name);
-			}
-		
-            function showUserRequestObject(userRequestData){
-                $('#requestData').html(
-                userRequestData.name + ", " +
-                    userRequestData.email + ", "+
-                    Utils.convertDate(userRequestData.date, Utils.dateFormatInternal, Utils.dateFormatGui) + ", " +
-                    userRequestData.place);
-			}
-			
-			function showUserRequests(userRequestsData) {
-				log.debug('log showUserRequests()');
-				
-				var content = '<table border="1">';
-				$.each(userRequestsData, function(index, entry) {
-					log.debug('handle log entry:', index);
-					content += '<tr>';
-					content += '<td>' +Utils.convertDate(entry.date, Utils.dateFormatInternal, Utils.dateFormatGui)+ '</td>';
-					content += '<td>' +mixAndMatch.getLocationName(entry.locationKey)+ '</td>';
-					content += '<td><a href="javascript:showDetailInformations(\''+entry.matchUrl+'\')">Teilnehmerliste</a></td>';
-					content += '</tr>';
-				});
-				content += '</table>';
-
-                $('#responseData').html(content);
-            }
-			
-			function showDetailInformations(pMatchUrl) {
-				log.debug('log showDetailInformations() matchUrl:', pMatchUrl);
-				
-				mixAndMatch.getMatchDetails(function(pMatchDetails) {
-
-					var content = '<table border="1">';
-					$.each(pMatchDetails, function(index, entry) {
-						log.debug('log entry:', index);
-						content += '<tr>';
-						content += '<td>' +entry.userid+ '</td>';
-						content += '</tr>';
-					});
-					content += '</table>';
-
-					$('#detailData').html(content);
-					
-				}, pMatchUrl);
-            }
-			
-        </script>
     </head>
+
     <body>
 
-        <div data-role="page">
+        <div data-role="page" id="pageStatus">
             <div data-role="header" data-theme="b">
-                <a href="index.html" rel="external" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left">Back</a>
+				<a href="index.html" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-left jqm-home">Home</a>
                 <h1>Status</h1>
             </div>
 
             <div data-role="content">
 				<h3 align="center">Status Ihrer Verabredungen</h3>
-                <div data-role="fieldcontain">
-                    <label for="name">Name:</label>
-                    <input type="text" name="name" id="name" value="" />
-                </div>
-				<button id="getStatusButton">Status laden</button>
-				<!--
-				<div>
-					Ihre letzte Anmeldung:
-                </div>
-                <div id="requestData">
-                </div>
-                <br/>
-				-->
+
                 <div>
 					Ihre anstehenden Verabredungen:
                 </div>
@@ -130,6 +33,70 @@
             <div data-role="footer">
                 <h4>HTML Client</h4>
             </div>
+
+			<script type="text/javascript">
+ 		
+				JqmUtil.live('pageStatus', 'pageshow', function(){
+					//$('div:jqmData(role="page")').live('pageshow', function(pEvent){
+					loadUserRequests();
+				});
+ 		
+				function loadUserRequests(){
+					$('#responseData').html('... loading data ...');
+					$.mobile.showPageLoadingMsg();
+					mixAndMatch.getLunchRequestsForUser(function(pData) {
+						$.mobile.hidePageLoadingMsg();
+						showUserRequestsCallback(pData);
+					});
+				}
+		
+				function showUserRequestObject(userRequestData){
+					$('#requestData').html(
+					userRequestData.name + ", " +
+						userRequestData.email + ", "+
+						Utils.convertDate(userRequestData.date, Utils.dateFormatInternal, Utils.dateFormatGui) + ", " +
+						userRequestData.place);
+				}
+			
+				function showUserRequestsCallback(userRequestsData) {
+					log.debug('showUserRequestsCallback()');
+				
+					var content = '<table border="1">';
+					$.each(userRequestsData, function(index, entry) {
+						log.debug('handle log entry:', index);
+						content += '<tr>';
+						content += '<td>' +Utils.convertDate(entry.date, Utils.dateFormatInternal, Utils.dateFormatGui)+ '</td>';
+						content += '<td>' +mixAndMatch.getLocationName(entry.locationKey)+ '</td>';
+						content += '<td><a href="javascript:showDetailInformations(\''+entry.matchUrl+'\')">Teilnehmerliste</a></td>';
+						content += '</tr>';
+					});
+					content += '</table>';
+
+					$('#responseData').html(content);
+				}
+			
+				function showDetailInformations(pMatchUrl) {
+					log.debug('showDetailInformations() matchUrl:', pMatchUrl);
+					$.mobile.showPageLoadingMsg();
+				
+					mixAndMatch.getMatchDetails(pMatchUrl, function(pMatchDetails) {
+						$.mobile.hidePageLoadingMsg();
+
+						var content = '<table border="1">';
+						$.each(pMatchDetails, function(index, entry) {
+							log.debug('log entry:', index);
+							content += '<tr>';
+							content += '<td>' +entry.userid+ '</td>';
+							content += '</tr>';
+						});
+						content += '</table>';
+
+						$('#detailData').html(content);
+					});
+				}
+			
+			</script>
+
         </div>
     </body>
 </html>

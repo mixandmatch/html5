@@ -18,6 +18,11 @@ function MixAndMatch(pRemoteService) {
 	 * @private
 	 */
 	this.locations = null;
+	
+	/**
+	 * @private
+	 */
+	this.userid = null;
 
 	/**
 	 * constructor like method (is called at the end of this file)
@@ -28,12 +33,22 @@ function MixAndMatch(pRemoteService) {
 	/**
      * public checkin function
      */
-	this.getLocations = function(callback) {
-		log.debug('getLocations');
-		this.remoteService.getLocations(function(pData) {
-			that.locations = pData;
-			callback(pData);
-		});
+	this.getLocations = function(pCallback) {
+		log.debug('getLocations()');
+		
+		if (this.locations == undefined) {
+			log.debug('load locations via remote service.');
+			this.remoteService.getLocations(function(pData) {
+				log.debug('locations loaded');
+				that.locations = pData;
+				if (pCallback != undefined) {
+					pCallback(pData);
+				}
+			});
+		} else {
+			log.debug('locations already loaded. Return cached data.');
+			pCallback(this.locations);
+		}
 	}
 	
 	this.getLocationName = function(pLocationId) {
@@ -87,10 +102,11 @@ function MixAndMatch(pRemoteService) {
 	/**
      * public lunch response function
      */
-	this.getLunchRequestsByUser = function(pCallback, pUserid) {
-		log.debug('getLunchRequestsByUser()');
+	this.getLunchRequestsForUser = function(pCallback) {
+		log.debug('getLunchRequestsForUser()');
 		
-		var userId = this.normUserid(pUserid);
+		var userId = this.normUserid(this.userid);
+		log.debug('user id:', userId);
 		
 		if (this.locations == null) {
 			this.remoteService.getLocations(function(pLocationList) {
@@ -113,17 +129,20 @@ function MixAndMatch(pRemoteService) {
 	/**
      * 
      */
-	this.getMatchDetails = function(pCallback, pMatchUrl) {
+	this.getMatchDetails = function(pMatchUrl, pCallback) {
 		log.debug('getMatchDetails() matchUrl:', pMatchUrl);
 		this.remoteService.getMatchDetails(pCallback, pMatchUrl);
 	}
 	/**
      * create a lunch request
      */
-	this.createLunchRequest = function(callback, userDataObject) {
-		log.debug('createLunchRequest()');
-		userDataObject.name = this.normUserid(userDataObject.name);
-		this.remoteService.createLunchRequest(callback, userDataObject);
+	this.createLunchRequest = function(pDate, pLocation, pCallback) {
+		log.debug('createLunchRequest() date:' +pDate+ ', location:' +pLocation);
+		var userDataObject = {};
+		userDataObject.name = this.normUserid(this.userid);
+		userDataObject.date = pDate;
+		userDataObject.place = pLocation;
+		this.remoteService.createLunchRequest(userDataObject, pCallback);
 	}
 	
 	/**

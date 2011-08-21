@@ -9,24 +9,18 @@
 
         <div data-role="page" id="pageAll">
             <div data-role="header" data-theme="b">
-                <a href="index.html" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left">Back</a>
+				<a href="index.html" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-left jqm-home">Home</a>
                 <h1>Alle Verabredungen</h1>
             </div>
 
             <div data-role="content">
 				<h3 align="center">Alle Verabredungen</h3>
 
-				<p>Wenn ich mal Zeit habe, ...</p>
-				<p>Oder gibt es andere Freiwillge f&uuml;r diesen Punkt?</p>
+				<p>Alle Verabredungen von allen Leuten. Sucht Euch also am besten ein bereits bestehendes Essen aus und meldet Euch dort auch an.</p>
 
                 <div id="responseData">
                 </div>
                 <br/>
-                <div>
-					Teilnehmer:
-                </div>
-                <div id="detailData">
-				</div>
             </div>
 
             <div data-role="footer">
@@ -34,21 +28,17 @@
             </div>
 
 			<script type="text/javascript">
-
-				$('#pageAll').live('pagecreate', function(pEvent){
-					log.debug('pagecreate');
-					mixAndMatch.getLocations(function(pData){
-						loadAllRequests();
+				JqmUtil.live('pageAll', 'pageshow', function(){
+					$.mobile.showPageLoadingMsg();
+					$('#responseData').html('... loading data ...');
+					mixAndMatch.getAllLunchRequests(function(pData) {
+						$.mobile.hidePageLoadingMsg();
+						showAllRequests(pData);
 					});
 				});
 			
-				function loadAllRequests(){
-					$('#responseData').html('... loading data ...');
-					mixAndMatch.getAllLunchRequests(showAllRequests);
-				}
-		
 				function showAllRequests(userRequestsData) {
-					log.debug('log showAllRequests()');
+					log.debug('showAllRequests()');
 				
 					var content = '<table border="1">';
 					$.each(userRequestsData, function(index, entry) {
@@ -65,7 +55,7 @@
 				}
 			
 				function showDetailInformations(pMatchUrl) {
-					log.debug('log showDetailInformations() matchUrl:', pMatchUrl);
+					log.debug('showDetailInformations() matchUrl:', pMatchUrl);
 				
 					mixAndMatch.getMatchDetails(function(pMatchDetails) {
 

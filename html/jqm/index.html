@@ -7,65 +7,104 @@
 
         <script type="text/javascript" src="../../js/CommonHeaderLibs.js"></script>
         <script type="text/javascript" src="../../js/CommonHeaderInit.js"></script>
-
-        <script type="text/javascript">
-            
-            $(document).ready(function(){
-
-            });
-
-        </script>
-
     </head>
+
     <body>
 
-        <div data-role="page" id="index">
+        <div data-role="page" id="pageIndex">
             <div data-role="header" data-theme="b">
                 <h1>Mix and Match</h1>
             </div>
 
             <div data-role="content">
-                <p>Startseite</p>
+
+				<div data-role="fieldcontain">
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" id="name" value="" />
+                </div>
 
                 <ul data-role="listview" data-inset="true">
-                    <li><a href="checkin.html" rel="external">Verabredung erstellen</a></li>
-                    <li><a href="status.html" rel="external">Ihre Verabredungen</a></li>
+                    <li><a href="./checkin.html">Verabredung erstellen</a></li>
+                    <li><a href="status.html">Ihre Verabredungen</a></li>
                     <li><a href="all.html">Alle Verabredungen</a></li>
                 </ul>
 
                 <ul data-role="listview" data-inset="true">
-                    <li><a href="#About">About</a></li>
+                    <li><a href="about.html">About</a></li>
                 </ul>
             </div>
 
             <div data-role="footer">
                 <h4>v 0.9</h4>
             </div>
+
+			<script type="text/javascript">
+            
+				JqmUtil.live('pageIndex', 'pagecreate', function(){					
+					// Vorbelegung mit der User-ID
+					var userid = localStorage["userid"];
+					$('#name').val(userid);
+					// FIXME per setter
+					mixAndMatch.userid = userid;
+					
+					// bind change event on name input
+					$('#name').change(function(){
+						jqmLog.debug("userid changed. Save to local storage.");
+						var userid = $('#name').val();
+						localStorage["userid"] = userid;
+						mixAndMatch.userid = userid;
+					});
+				});					
+
+			</script>
         </div>
 
-		<div data-role="page" id="About">
+		<!--
+		<div data-role="page" id="pageAbout">
 			<div data-role="header" data-theme="b">
-                <a href="index.html" rel="external" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left">Back</a>
+				<a href="#pageIndex" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-left jqm-home">Home</a>
 				<h1>About</h1>
 			</div>
-
+		
 			<div data-role="content">
 				<h3>Bekannte Fehler</h3>
 				<p>Es gibt keine Fehler :-)</p>
 				<p>Wer Lust hat kann aber gerne bei <a href="https://github.com/mixandmatch/html5/issues">github</a> ein ToDo einstellen.</p>
-
+		
 				<h3>Changelog</h3>
 				<p>Text</p>
 				<ul>
-                    <li>gsdf gsd g gdsgf d</li>
-                    <li>fdfdg dsfgfgdfhdf</li>
-                    <li>gsfdg dfgfg sd</li>
+							<li>gsdf gsd g gdsgf d</li>
+							<li>fdfdg dsfgfgdfhdf</li>
+							<li>gsfdg dfgfg sd</li>
 			</div>
-
+		
 			<div data-role="footer">
 				<h4>HTML Client</h4>
 			</div>
+		
+			<script type="text/javascript">
+				$('#pageAbout').live('pagecreate', function(pEvent){
+					jqmLog.debug('Page: pageAbout, Event: pagecreate');
+				});
+		
+				$('#pageAbout').live('pageshow', function(pEvent){
+					jqmLog.debug('Page: pageAbout, Event: pageshow');
+				});
+			</script>
 		</div>
+		-->
 
+		<!--
+		<script type="text/javascript">
+			$('#pageAbout').live('pagecreate', function(pEvent){
+				jqmLog.debug('Page: pageAbout, Event: pagecreate');
+			});
+		
+			$('#pageAbout').live('pageshow', function(pEvent){
+				jqmLog.debug('Page: pageAbout, Event: pageshow');
+			});
+		</script>
+		-->
     </body>
 </html>

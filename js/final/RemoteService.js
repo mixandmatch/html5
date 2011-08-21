@@ -81,7 +81,7 @@ function RemoteService(pBackendUrl) {
 	/**
      * call the backend to get a list of all lunch responses
      */
-	this.createLunchRequest = function(pCallback, userRequestObject) {
+	this.createLunchRequest = function(userRequestObject, pCallback) {
 		log.debug('createLunchRequest()');
 		log.debug('userRequestObject:', JSON.stringify(userRequestObject));
 		

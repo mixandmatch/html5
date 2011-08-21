@@ -1,6 +1,7 @@
 
 // global logger called "log"
 var log;
+var jqmLog;
 
 /**
  * configure logging
@@ -10,7 +11,7 @@ function configureLogging() {
 	var logRoot = log4javascript.getRootLogger();
 	// var appender = new log4javascript.InPageAppender('log');
 	var appender = new log4javascript.PopUpAppender();
-	var layout = new log4javascript.PatternLayout("%d{HH:mm:ss} %-5p %-40c - %m%n");
+	var layout = new log4javascript.PatternLayout("%d{HH:mm:ss} %-5p %-30c - %m%n");
 	appender.setLayout(layout);
 	logRoot.addAppender(appender);
 	//logRoot.setLevel(log4javascript.Level.OFF);
@@ -28,6 +29,8 @@ function configureLogging() {
 	if (cookieLogging == 'true') {
 		log4javascript.setEnabled(true);
 		log4javascript.getLogger("de.html5").setLevel(log4javascript.Level.TRACE);
+		jqmLog = log4javascript.getLogger("jquerymobile");
+		jqmLog.setLevel(log4javascript.Level.TRACE);
 	}
 	logRoot.info("Logging loaded and configured.");
     

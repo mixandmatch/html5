@@ -34,6 +34,8 @@ function UtilsClass() {
 		log.debug("internal date:", newDate);
 		return newDate;
 	}
+	
+	log.debug('UtilsClass created');
 }
 
-var Utils = new UtilsClass();
+//var Utils = new UtilsClass();

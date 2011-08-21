@@ -7,8 +7,12 @@
 
 var mixAndMatch;
 
+// bereits hier definieren damit die Utils sofort verfügbar sind
+configureLogging();
+var JqmUtil = new JqmUtilClass();
+var Utils = new UtilsClass();
+
 $(document).ready(function(){
-	configureLogging();
 	
 	// create the remote service object which should be used in MixAndMatch
 	var remoteService = new RemoteService('http://ec2-46-137-12-115.eu-west-1.compute.amazonaws.com/api');
@@ -27,5 +31,7 @@ $(document).ready(function(){
 	// create the MixAndMatch instance
 	mixAndMatch = new MixAndMatch(remoteService);
 
-});
+	// preload locations
+	mixAndMatch.getLocations();
 
+});
