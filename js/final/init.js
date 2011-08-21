@@ -16,12 +16,16 @@ function configureLogging() {
 	logRoot.addAppender(appender);
 	//logRoot.setLevel(log4javascript.Level.OFF);
 	logRoot.setLevel(log4javascript.Level.DEBUG);
+	jqmLog = log4javascript.getLogger("jquerymobile");
 	log4javascript.setEnabled(false);
 
 	// Define log levels
 	var urlParams = getUrlVars();
 	if (urlParams.logging) {
-		$.cookie('logging', urlParams.logging, {path: '/', expires: 1} );
+		$.cookie('logging', urlParams.logging, {
+			path: '/', 
+			expires: 1
+		} );
 	}
 
 	var cookieLogging = $.cookie('logging');
@@ -29,7 +33,6 @@ function configureLogging() {
 	if (cookieLogging == 'true') {
 		log4javascript.setEnabled(true);
 		log4javascript.getLogger("de.html5").setLevel(log4javascript.Level.TRACE);
-		jqmLog = log4javascript.getLogger("jquerymobile");
 		jqmLog.setLevel(log4javascript.Level.TRACE);
 	}
 	logRoot.info("Logging loaded and configured.");
