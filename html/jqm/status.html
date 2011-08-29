@@ -9,25 +9,13 @@
         <div data-role="page" id="pageStatus">
             <div data-role="header" data-theme="b">
 				<a href="index.html" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-left jqm-home">Home</a>
-                <h1>Status</h1>
+                <h1>Meine Verabredungen</h1>
             </div>
 
             <div data-role="content">
-				<h3 align="center">Status Ihrer Verabredungen</h3>
-
-                <div>
-					Ihre anstehenden Verabredungen:
-                </div>
-                <div id="responseData">
-                    <!-- will be filled by javascript -->
-                </div>
+                <ul id="matches" data-role="listview">
+                </ul>
                 <br/>
-                <div>
-					Teilnehmer:
-                </div>
-                <div id="detailData">
-                    <!-- will be filled by javascript -->
-                </div>
             </div>
 
             <div data-role="footer">
@@ -38,8 +26,38 @@
  		
 				JqmUtil.live('pageStatus', 'pageshow', function(){
 					//$('div:jqmData(role="page")').live('pageshow', function(pEvent){
-					loadUserRequests();
+					//loadUserRequests();
+                    $.mobile.showPageLoadingMsg();
+                    
+                    var userid = localStorage["userid"];
+					//$('#name').val(userid);
+					// FIXME per setter
+					mixAndMatch.userid = userid;
+                    
+                    mixAndMatch.getMatchesForUser(function(pData) {
+						$.mobile.hidePageLoadingMsg();
+						showAllRequests(pData);
+					});
 				});
+                
+                
+				function showAllRequests(userRequestsData) {
+					log.debug('showAllRequests()');
+				
+					$.each(userRequestsData, function(index, entry) {
+                        log.debug('handle log entry:', index);
+                        var row = '<li>'
+						row += '<h1>' +Utils.convertDate(entry.date, Utils.dateFormatInternal, Utils.dateFormatGui)+ '</h1>';
+						row += '<h2>' +mixAndMatch.getLocationName(entry.locationKey)+ '</h2>';
+						row += '<p>Teilnehmer: ' +entry.users+ '</p>';
+                        row += '<div class="ui-li-count">'+entry.users.length+'</div>';
+						row += '</li>';
+                        $('#matches').append(row)
+                        $('#matches').listview('refresh');
+                        
+					});
+                    $('#matches').listview();
+				}
  		
 				function loadUserRequests(){
 					$('#responseData').html('... loading data ...');

@@ -106,6 +106,22 @@ function MixAndMatch(pRemoteService) {
 		log.debug('getAllMatches()');
 		this.remoteService.getAllMatches(pCallback);
 	}
+    
+    this.getMatchesForUser = function(pCallback) {
+		log.debug('getMatchesForUser()');
+		
+		var userId = this.normUserid(this.userid);
+		log.debug('user id:', userId);
+		
+		if (this.locations == null) {
+			this.remoteService.getLocations(function(pLocationList) {
+				that.locations = pLocationList;
+				that.remoteService.getMatchesByUser(pCallback, userId);
+			});
+		} else {
+			this.remoteService.getMatchesByUser(pCallback, userId);
+		}
+	}
 	
 	/**
      * public lunch response function

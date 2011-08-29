@@ -49,6 +49,17 @@ function RemoteService(pBackendUrl) {
 			pCallback(data);
 		});
 	}
+    
+    this.getMatchesByUser = function(pCallback, pUserid) {
+		log.debug('getMatchesByUser() user:', pUserid);
+		var url = backend + '/users/' +pUserid+ '/matches?callback=?';
+		log.trace('url:', url);
+
+		$.getJSON(url, function(data) {
+			log.debug("Response data:", JSON.stringify(data));
+			pCallback(data);
+		});
+	}
 	
 	/**
      * call the backend to get a list of all lunch responses
