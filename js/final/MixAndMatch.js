@@ -98,6 +98,14 @@ function MixAndMatch(pRemoteService) {
 		log.debug('getAllLunchRequests()');
 		this.remoteService.getAllLunchRequests(pCallback);
 	}
+    
+    	/**
+     * public lunch response function
+     */
+	this.getAllMatches = function(pCallback) {
+		log.debug('getAllMatches()');
+		this.remoteService.getAllMatches(pCallback);
+	}
 	
 	/**
      * public lunch response function

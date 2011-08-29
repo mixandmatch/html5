@@ -36,6 +36,19 @@ function RemoteService(pBackendUrl) {
 			pCallback(data);
 		});
 	}
+    
+    	/**
+     * call the backend to get a list of all match
+     */
+	this.getAllMatches = function(pCallback) {
+		log.debug('getAllMatches()');
+		var url = backend + '/matches?callback=?'
+
+		$.getJSON(url, function(data) {
+			log.debug("getAllMatches data:", JSON.stringify(data));
+			pCallback(data);
+		});
+	}
 	
 	/**
      * call the backend to get a list of all lunch responses
