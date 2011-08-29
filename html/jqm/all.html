@@ -42,6 +42,7 @@
 						row += '<h1>' +Utils.convertDate(entry.date, Utils.dateFormatInternal, Utils.dateFormatGui)+ '</h1>';
 						row += '<h2>' +mixAndMatch.getLocationName(entry.locationKey)+ '</h2>';
 						row += '<p>Teilnehmer: ' +entry.users+ '</p>';
+                        row += '<div class="ui-li-count">'+entry.users.length+'</div>';
 						row += '</li>';
                         $('#matches').append(row)
                         $('#matches').listview('refresh');
