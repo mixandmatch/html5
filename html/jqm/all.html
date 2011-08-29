@@ -14,12 +14,8 @@
             </div>
 
             <div data-role="content">
-				<h3 align="center">Alle Verabredungen</h3>
-
-				<p>Alle Verabredungen von allen Leuten. Sucht Euch also am besten ein bereits bestehendes Essen aus und meldet Euch dort auch an.</p>
-
-                <div id="responseData">
-                </div>
+                <ul id="matches" data-role="listview">
+                </ul>
                 <br/>
             </div>
 
@@ -40,18 +36,18 @@
 				function showAllRequests(userRequestsData) {
 					log.debug('showAllRequests()');
 				
-					var content = '<table border="1">';
 					$.each(userRequestsData, function(index, entry) {
-						log.debug('handle log entry:', index);
-						content += '<tr>';
-						content += '<td>' +Utils.convertDate(entry.date, Utils.dateFormatInternal, Utils.dateFormatGui)+ '</td>';
-						content += '<td>' +mixAndMatch.getLocationName(entry.locationKey)+ '</td>';
-						content += '<td>' +entry.users+ '</td>';
-						content += '</tr>';
+                        log.debug('handle log entry:', index);
+                        var row = '<li>'
+						row += '<h1>' +Utils.convertDate(entry.date, Utils.dateFormatInternal, Utils.dateFormatGui)+ '</h1>';
+						row += '<h2>' +mixAndMatch.getLocationName(entry.locationKey)+ '</h2>';
+						row += '<p>Teilnehmer: ' +entry.users+ '</p>';
+						row += '</li>';
+                        $('#matches').append(row)
+                        $('#matches').listview('refresh');
+                        
 					});
-					content += '</table>';
-
-					$('#responseData').html(content);
+                    $('#matches').listview();
 				}
 			
 				function showDetailInformations(pMatchUrl) {
