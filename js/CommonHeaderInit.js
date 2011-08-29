@@ -15,8 +15,8 @@ var Utils = new UtilsClass();
 $(document).ready(function(){
 	
 	// create the remote service object which should be used in MixAndMatch
-	var remoteService = new RemoteService('http://ec2-46-137-12-115.eu-west-1.compute.amazonaws.com/api');
-	//var remoteService = new RemoteService('http://192.168.99.23:8080');
+	//var remoteService = new RemoteService('http://ec2-46-137-12-115.eu-west-1.compute.amazonaws.com/api');
+	var remoteService = new RemoteService('http://localhost:8080/spring-backend');
 
 	/*
 	var remoteServiceValidator = new RemoteServiceValidator();
