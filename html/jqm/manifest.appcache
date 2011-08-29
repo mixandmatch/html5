@@ -1,0 +1,49 @@
+CACHE MANIFEST
+
+#version 1.0 8-25-2011
+
+CACHE:
+
+#images
+
+
+#internal HTML documents
+about.html
+all.html
+checkin.html
+status.html
+
+#style sheets
+../../css/jqm/jqm-docs.css
+../../css/jqm/jquery.mobile-1.0b2.min.css
+../../css/jqm/jquery.ui.datepicker.mobile.css
+
+#style sheet images
+#../../css/images/jqm-sitebg.png
+#../../css/images/version.png
+../../css/jqm/images/ajax-loader.png
+../../css/jqm/images/icon-search-black.png
+../../css/jqm/images/icons-18-black.png
+../../css/jqm/images/icons-18-white.png
+
+#javascript files
+../../js/CommonHeaderLibs.js
+../../js/lib/jquery-1.6.2.min.js
+../../js/lib/jquery.cookie.js
+../../js/lib/jquery.timers-1.2.js
+../../js/lib/log4javascript.js
+../../js/lib/simpledateformat.js
+../../js/lib/json2.js
+../../js/lib/date.js
+../../js/final/Utils.js
+../../js/final/JqmUtil.js
+../../js/final/init.js
+../../js/final/MixAndMatch.js
+../../js/final/RemoteService.js
+../../js/final/RemoteServiceValidator.js
+../../js/final/StorageService.js
+../../js/lib/jquery.mobile-1.0b2.min.js
+../../js/CommonHeaderInit.js
+
+NETWORK:
+*
