@@ -4,7 +4,7 @@
 		<meta content="width=device-width,minimum-scale=1,maximum-scale=1" name="viewport"></meta>
 
         <title>Mix and Match mit jQuery Mobile</title>
-
+                <link href="../../css/swipe.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="../../js/CommonHeaderLibs.js"></script>
         <script type="text/javascript" src="../../js/CommonHeaderInit.js"></script>
     </head>
@@ -20,7 +20,7 @@
 
 				<div data-role="fieldcontain">
                     <label for="name">Name:</label>
-                    <input type="text" name="name" id="name" value="" />
+                    <input type="text" name="name" id="name" />
                 </div>
 
                 <ul data-role="listview" data-inset="true">
@@ -43,7 +43,7 @@
 				JqmUtil.live('pageIndex', 'pagecreate', function(){					
 					// Vorbelegung mit der User-ID
 					var userid = localStorage["userid"];
-					$('#name').val(userid);
+					//$('#name').val(userid);
 					// FIXME per setter
 					mixAndMatch.userid = userid;
 					
@@ -54,7 +54,15 @@
 						localStorage["userid"] = userid;
 						mixAndMatch.userid = userid;
 					});
-				});					
+				});	
+                
+                JqmUtil.live('pageIndex', 'pagebeforeshow', function(){					
+					// Vorbelegung mit der User-ID
+					var userid = localStorage["userid"];
+					$('#name').val(userid);
+				});		
+                
+                
 
 			</script>
         </div>

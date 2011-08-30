@@ -14,6 +14,7 @@
 
             <div data-role="content">
                 <ul id="matches" data-role="listview">
+                    <li id="testid" class="delete">Test</li>
                 </ul>
                 <br/>
             </div>
@@ -40,78 +41,53 @@
 					});
 				});
                 
+                $('li.delete').live('swiperight', function(e){
+                        // reference the just swiped list item
+                        var $li = $(this);
+                        // remove all buttons first
+                        $('.aDeleteBtn').remove();
+                        // create buttons and div container
+
+                        var $deleteBtn = $('<a>Delete</a>').attr({
+                            'class': 'aDeleteBtn ui-btn-up-r',
+                            'href': 'some/link/page.html?nID=' + $li.data('nid')
+
+                        });
+
+                    // insert swipe div into list item
+
+                    $li.prepend($deleteBtn);
+
+                });
+                
+                $('li.delete').live('swipeleft', function(e){
+                        $('.aDeleteBtn').remove();
+                });
+                
                 
 				function showAllRequests(userRequestsData) {
 					log.debug('showAllRequests()');
 				
 					$.each(userRequestsData, function(index, entry) {
                         log.debug('handle log entry:', index);
-                        var row = '<li>'
+
+                        
+                        var row = '<li id="item'+index+'">';
 						row += '<h1>' +Utils.convertDate(entry.date, Utils.dateFormatInternal, Utils.dateFormatGui)+ '</h1>';
 						row += '<h2>' +mixAndMatch.getLocationName(entry.locationKey)+ '</h2>';
 						row += '<p>Teilnehmer: ' +entry.users+ '</p>';
                         row += '<div class="ui-li-count">'+entry.users.length+'</div>';
 						row += '</li>';
+                        
+   
+                        
                         $('#matches').append(row)
                         $('#matches').listview('refresh');
-                        
 					});
                     $('#matches').listview();
 				}
  		
-				function loadUserRequests(){
-					$('#responseData').html('... loading data ...');
-					$.mobile.showPageLoadingMsg();
-					mixAndMatch.getLunchRequestsForUser(function(pData) {
-						$.mobile.hidePageLoadingMsg();
-						showUserRequestsCallback(pData);
-					});
-				}
-		
-				function showUserRequestObject(userRequestData){
-					$('#requestData').html(
-					userRequestData.name + ", " +
-						userRequestData.email + ", "+
-						Utils.convertDate(userRequestData.date, Utils.dateFormatInternal, Utils.dateFormatGui) + ", " +
-						userRequestData.place);
-				}
-			
-				function showUserRequestsCallback(userRequestsData) {
-					log.debug('showUserRequestsCallback()');
 				
-					var content = '<table border="1">';
-					$.each(userRequestsData, function(index, entry) {
-						log.debug('handle log entry:', index);
-						content += '<tr>';
-						content += '<td>' +Utils.convertDate(entry.date, Utils.dateFormatInternal, Utils.dateFormatGui)+ '</td>';
-						content += '<td>' +mixAndMatch.getLocationName(entry.locationKey)+ '</td>';
-						content += '<td><a href="javascript:showDetailInformations(\''+entry.matchUrl+'\')">Teilnehmerliste</a></td>';
-						content += '</tr>';
-					});
-					content += '</table>';
-
-					$('#responseData').html(content);
-				}
-			
-				function showDetailInformations(pMatchUrl) {
-					log.debug('showDetailInformations() matchUrl:', pMatchUrl);
-					$.mobile.showPageLoadingMsg();
-				
-					mixAndMatch.getMatchDetails(pMatchUrl, function(pMatchDetails) {
-						$.mobile.hidePageLoadingMsg();
-
-						var content = '<table border="1">';
-						$.each(pMatchDetails, function(index, entry) {
-							log.debug('log entry:', index);
-							content += '<tr>';
-							content += '<td>' +entry.userid+ '</td>';
-							content += '</tr>';
-						});
-						content += '</table>';
-
-						$('#detailData').html(content);
-					});
-				}
 			
 			</script>
 
