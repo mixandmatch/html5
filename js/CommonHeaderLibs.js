@@ -12,7 +12,7 @@ requiredCSS("../../css/jqm/jquery.mobile-1.0b2.min.css");
 requiredCSS("../../css/jqm/jqm-docs.css");
 
 // load js files
-requiredJS("../../js/lib/jquery-1.6.2.min.js");
+requiredJS("../../js/lib/jquery-1.9.1.min.js");
 //requiredJS("../../js/lib/jquery-1.6.2.js");
 requiredJS("../../js/lib/jquery.cookie.js");
 requiredJS("../../js/lib/jquery.timers-1.2.js");
@@ -31,4 +31,4 @@ requiredJS("../../js/final/RemoteService.js");
 requiredJS("../../js/final/RemoteServiceValidator.js");
 requiredJS("../../js/final/StorageService.js");
 
-requiredJS("../../js/lib/jquery.mobile-1.0b2.min.js");
+requiredJS("../../js/lib/jquery.mobile-1.3.2.min.js");
