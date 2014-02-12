@@ -1,0 +1,26 @@
+<navigation/>
+
+<div class="form-element">
+
+    <div class="alert alert-success" ng-show="successMessage"><p>{{successMessage}}</p></div>
+    <div class="alert alert-danger" ng-show="errorMessage"><p>{{errorMessage}}</p></div>
+
+    <form novalidate name="dateForm" ng-hide="successMessage" role="form">
+        <div class="form-group">
+            <label class="control-label form-block" for="date">Datum und Zeit</label>
+            <input name="addNewDate" type="text" ng-model="addnewdate.date"
+                   class="form-control form-inline-block form-auto-width" placeholder="Datum wählen" mmdatepicker required/>
+            <select name="addNewTime" ng-model="addnewdate.time"
+                    ng-options="item.key as item.value for item in timeOptions"
+                    class="form-control form-inline-block form-auto-width" placeholder="Zeit wählen" required/>
+        </div>
+        <div class="form-group">
+            <label class="control-label form-block" for="location">Ort</label>
+            <select name="addNewLocation" ng-model="addnewdate.location"
+                    ng-options="item.key as item.value for item in locationOptions"
+                    class="form-control form-inline-block form-auto-width" placeholder="Ort wählen" required/>
+        </div>
+        <button ng-click="adddate(addnewdate)" class="btn btn-primary" ng-disabled="dateForm.$invalid">Termin eintragen
+        </button>
+    </form>
+</div>

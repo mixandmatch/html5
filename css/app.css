@@ -1,0 +1,70 @@
+/* app css stylesheet */
+
+body {
+    padding: 20px;
+}
+
+.view-container {
+    width: 700px;
+    margin: auto;
+}
+
+.form-heading {
+    margin-top: 0;
+}
+
+.form-element {
+    margin: 5px auto 5px auto;
+    padding: 10px;
+    background-color: #fff;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ddd;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: none;
+    width: 400px;
+}
+
+.form-auto-width {
+    width: auto !important;
+}
+
+.form-inline-block {
+    display: inline-block !important;
+}
+
+.form-block {
+    display: block !important;
+}
+
+.button-group {
+    margin: 5px 0 5px 0;
+}
+
+.loader-icon {
+    margin: auto;
+}
+
+.label-link A:link {
+    text-decoration: none;
+    color: white;
+}
+
+.label-link A:visited {
+    text-decoration: none;
+    color: white;
+}
+
+.label-link A:active {
+    text-decoration: none;
+    color: white;
+}
+
+.label-link A:hover {
+    text-decoration: underline;
+    color: white;
+}
+
+#date-item .label {
+    line-height: 25px;
+}

@@ -1,0 +1,29 @@
+<navigation />
+
+<div class="panel panel-default" ng-show="dateItems || loaderIcon || resultMessage">
+  <div class="panel-heading">
+    <h3 class="panel-title">Meine Termine</h3>
+  </div>
+  <div class="panel-body">
+
+    <div class="alert alert-info" ng-show="resultMessage"><p ng-bind-html-unsafe="resultMessage"></p></div>
+    <div class="loader-icon" ng-show="loaderIcon"><img src="/img/ajax-loader.gif" class="img-responsive loader-icon" alt="Lade Daten" /></div>
+
+    <div class="list-group">
+      <li class="list-group-item" ng-repeat="dateItem in dateItems | orderBy:'+dateTime'">
+        <div class="pull-right" style="line-height: 65px;">
+            <a href="" ng-click="deleteDateItem(dateItem)"><span class="glyphicon glyphicon-trash" style="font-size: 24px;"></span></a>
+        </div>
+        <div id="date-item" style="width: 600px;">
+            <h4 class="list-group-item-heading"><span class="label label-primary">{{dateItem.dateTime | date:'HH:mm'}} Uhr</span> {{dateItem.location}} </h4>
+            <p class="list-group-item-text"><span class="label label-default">{{dateItem.owner.givenName}} {{dateItem.owner.surname}}</span>
+                <span class="label label-info label-link" ng-mouseover="showAttendees = true" ng-mouseleave="showAttendees = false" ng-show="dateItem.attendees.length > 0">+ {{dateItem.attendees.length}}</span>
+                <span ng-repeat="attendee in dateItem.attendees | orderBy:'+surname'">
+                    <span class="label label-default" ng-show="showAttendees">{{attendee.givenName}} {{attendee.surname}}</span>
+                </span>
+            </p>
+        </div>
+      </li>
+    </div>    
+  </div>
+</div>

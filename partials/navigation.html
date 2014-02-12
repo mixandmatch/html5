@@ -1,0 +1,16 @@
+<nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/#{{location.path()}}">Mix &amp; Match</a>
+    </div>
+
+    <ul class="nav navbar-nav navbar-left">
+        <li ng-class="{'active': location.path() == '/listdates' }"><a href="/#/listdates">Suche <span class="glyphicon glyphicon-search"></span></a></li>
+        <li ng-class="{'active': location.path() == '/newdate' }"><a href="/#/newdate">Neuer Termin <span class="glyphicon glyphicon-plus-sign"></span></a></li>
+        <li ng-class="{'active': location.path() == '/mydates' }"><a href="/#/mydates">Meine Termine <span class="glyphicon glyphicon-calendar"></span></a></li>
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="/#/logout">{{userDetails.givenName}} {{userDetails.surname}} <span class="glyphicon glyphicon-log-out"></span></a></li>
+    </ul>
+
+</nav>
